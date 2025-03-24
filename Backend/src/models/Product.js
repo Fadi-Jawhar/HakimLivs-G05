@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: String,
-    required: true
+    required: false //True när frontend är klara 
   }
 }, {
   timestamps: true
