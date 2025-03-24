@@ -22,12 +22,12 @@ export const createProducts = async (req, res) => {
   }
 };
 export const deleteProduct = async(req, res)=>{
+  const {id} = req.params
   if(!mongoose.Types.ObjectId.isValid(id)){
     return res.status(404).json({sucess: false, message: 'Product not found'})
 } 
   try {
-      const {id} = req.params
-      const deletedProduct = await Product.findOneAndDelete({_id: id})
+      const deletedProduct = await Product.findOneAndDelete(id)
       if(!deletedProduct){
         console.log('Product not found')
         return res.status(500).json({error: 'Product not found'})
@@ -38,5 +38,6 @@ export const deleteProduct = async(req, res)=>{
       res.status(500).json({ error: "Internal server error" })
     }
 }
+
 
 // TODO: Lägg till update och delete funktioner
