@@ -1,33 +1,10 @@
 import express from "express";
-import Product from "../models/Product.js";
 import { adminAuth } from "../middleware/auth.js";
-import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { getAllProducts } from "../controllers/productController.js";
 
-const router = express.Router();
+const productsRouter = express.Router();
 
-// Get directory path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Read products JSON file
-const productsJSON = JSON.parse(
-  readFileSync(join(__dirname, "../data/products.json"), "utf8")
-);
-
-// Get all products
-router.get("/", async (req, res) => {
-  try {
-    //! DONT USE IN PRODUCTION get products from json file
-    res.json(productsJSON);
-    return;
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-//TODO Get single product
+productsRouter.get("/", getAllProducts);
 
 // Create product (admin only)
 router.post("/", adminAuth, async (req, res) => {
@@ -44,4 +21,4 @@ router.post("/", adminAuth, async (req, res) => {
 
 //TODO Delete product (admin only)
 
-export default router;
+export default productsRouter;
