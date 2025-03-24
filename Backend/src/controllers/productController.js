@@ -21,6 +21,8 @@ export const createProducts = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
 export const deleteProduct = async(req, res)=>{
   const {id} = req.params
   if(!mongoose.Types.ObjectId.isValid(id)){
@@ -38,6 +40,5 @@ export const deleteProduct = async(req, res)=>{
       res.status(500).json({ error: "Internal server error" })
     }
 }
-
 
 // TODO: Lägg till update och delete funktioner
