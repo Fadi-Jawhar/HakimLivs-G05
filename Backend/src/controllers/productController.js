@@ -19,4 +19,14 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const createProducts = async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // TODO: Lägg till update och delete funktioner
