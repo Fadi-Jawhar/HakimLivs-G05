@@ -2,7 +2,7 @@ import Product from "../models/Product.js";
 import mongoose from "mongoose";
 
 
-// Hämta alla produkter
+// GET ALL funktion
 export const getAllProducts = async (req, res) => {
     try {
       const products = await Product.find(); 
@@ -12,6 +12,7 @@ export const getAllProducts = async (req, res) => {
     }
   };
 
+// POST funktion
 export const createProducts = async (req, res) => {
   try {
     const product = new Product(req.body);
@@ -22,7 +23,7 @@ export const createProducts = async (req, res) => {
   }
 };
 
-
+//DELETE funktion
 export const deleteProduct = async(req, res)=>{
   const {id} = req.params
   // Valiterar att id:t är i rätt format innan try/catch
