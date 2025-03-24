@@ -43,7 +43,8 @@ app.use('/api/products', productRoutes);
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hakim-livs')
   .then(() => console.log('Connected to MongoDB', process.env.MONGODB_URI))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch( err => {console.error('MongoDB connection error:', err)
+    process.exit(1)});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

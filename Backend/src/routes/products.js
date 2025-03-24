@@ -7,7 +7,7 @@ const productsRouter = express.Router();
 productsRouter.get("/", getAllProducts);
 
 // Create product (admin only)
-router.post("/", adminAuth, async (req, res) => {
+productsRouter.post("/", adminAuth, async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
