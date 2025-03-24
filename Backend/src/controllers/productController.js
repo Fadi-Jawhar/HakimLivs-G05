@@ -12,6 +12,15 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const createProducts = async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 export const deleteProduct = async(req, res)=>{
   if(!mongoose.Types.ObjectId.isValid(id)){
     return res.status(404).json({sucess: false, message: 'Product not found'})
@@ -29,14 +38,5 @@ export const deleteProduct = async(req, res)=>{
       res.status(500).json({ error: "Internal server error" })
     }
 }
-export const createProducts = async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
 // TODO: Lägg till update och delete funktioner
