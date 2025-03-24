@@ -1,6 +1,6 @@
 import express from "express";
 import { adminAuth } from "../middleware/auth.js";
-import { getAllProducts } from "../controllers/productController.js";
+import { getAllProducts, deleteProduct } from "../controllers/productController.js";
 
 const productsRouter = express.Router();
 
@@ -16,6 +16,10 @@ productsRouter.post("/", adminAuth, async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+// endpoint: api/products/id
+productsRouter.delete('/:id', deleteProduct)
+// productsRouter.put('/:id', updateProduct)
 
 //TODO Update product (admin only)
 

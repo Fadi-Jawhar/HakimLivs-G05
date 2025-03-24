@@ -1,12 +1,5 @@
 import Product from "../models/Product.js";
-import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-
-// Get directory path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
+import mongoose from "mongoose";
 
 
 // Hämta alla produkter
@@ -18,5 +11,23 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const deleteProduct = async(req, res)=>{
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(404).json({sucess: false, message: 'Product not found'})
+} 
+  try {
+      const {id} = req.params
+      const deletedProduct = await Product.findOneAndDelete({_id: id})
+      if(!deletedProduct){
+        console.log('Product not found')
+        return res.status(500).json({error: 'Product not found'})
+      }
+      res.status(200).json({message: 'Product deleted successfully', deletedProduct})
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: "Internal server error" })
+    }
+}
 
 // TODO: Lägg till update och delete funktioner
