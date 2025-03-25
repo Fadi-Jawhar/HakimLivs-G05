@@ -23,6 +23,22 @@ export const createProducts = async (req, res) => {
   }
 };
 
+//Post för att lägga till flera produkter
+
+export const createMultipleProducts = async (req, res) => {
+  try {
+    const products = req.body
+    if (!Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({ message: "Try agin no array created"})
+    }
+    const newProducts = await Product.insertMany(products)
+    res.status(201).json({ success: true, data: newProducts})
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ success: false, error: err.message})
+  }
+}
+
 //DELETE funktion
 export const deleteProduct = async(req, res)=>{
   const {id} = req.params
