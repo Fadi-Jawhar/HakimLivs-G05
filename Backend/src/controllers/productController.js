@@ -41,4 +41,9 @@ export const deleteProduct = async(req, res)=>{
     }
 }
 
-// TODO: Lägg till update och delete funktioner
+export const updateProduct = async (req, res)=>{
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      
+    }
+}

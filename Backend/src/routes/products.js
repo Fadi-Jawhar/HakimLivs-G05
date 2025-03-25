@@ -7,15 +7,6 @@ const productsRouter = express.Router();
 productsRouter.get("/", getAllProducts);
 
 // Create product (admin only)
-productsRouter.post("/", adminAuth, async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
 productsRouter.post("/", createProducts)
 
 // endpoint: api/products/id
