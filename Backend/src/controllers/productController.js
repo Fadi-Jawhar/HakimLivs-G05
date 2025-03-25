@@ -11,6 +11,22 @@ export const getAllProducts = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+// GET Specific Product funktion
+
+export const getProductById = async (req, res) => {
+  const {id} = req.params
+  try {
+    const product = await Product.findById(id);
+    if (product === null) {
+      return res.status(404).json({error: error.message })
+    } else {
+    res.json(product); 
+  }   
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
 
 // POST funktion
 export const createProducts = async (req, res) => {
