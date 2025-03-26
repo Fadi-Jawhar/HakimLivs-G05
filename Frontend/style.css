@@ -85,18 +85,80 @@ body {
 
 /* Footer */
 .site-footer {
-  background: #eaeaea;
-  padding: 1rem;
+  background-color: #222;
+  color: #fff;
+  padding: 40px 20px;
   text-align: center;
 }
 
-.footer-links {
+.footer-container {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.footer-links a {
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+}
+
+.footer-section h4 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f4a261;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  color: #ddd;
   text-decoration: none;
-  color: black;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #f4a261;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icons a {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+
+.social-icons img {
+  width: 100%;
+  height: auto;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.social-icons a:hover img {
+  transform: scale(1.1);
+  filter: brightness(1) invert(0.8);
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #bbb;
 }
