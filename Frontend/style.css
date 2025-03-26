@@ -85,18 +85,33 @@ body {
 
 /* Footer */
 .site-footer {
-  background-color: #222;
+  background-color: #242424;
   color: #fff;
   padding: 40px 20px;
-  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
 .footer-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 300px;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+
+.footer-right {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 25px;
 }
 
 .footer-section {
@@ -108,9 +123,8 @@ body {
 .footer-section h4 {
   font-size: 18px;
   margin-bottom: 15px;
-  border-bottom: 2px solid #f4a261;
-  display: inline-block;
-  padding-bottom: 5px;
+  color: #fff;
+  font-weight: bold;
 }
 
 .footer-section ul {
@@ -129,36 +143,69 @@ body {
 }
 
 .footer-section ul li a:hover {
-  color: #f4a261;
+  color: #4CAF50;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-info p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.contact-info i {
+  margin-right: 8px;
+  color: #4CAF50;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #444;
+  font-size: 14px;
+  color: #bbb;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.payment-icon {
+  display: flex;
+}
+
+.payment-icon img {
+  width: 150px;
+  height: auto;
 }
 
 .social-icons {
   display: flex;
+  
+}
+
+.social-icons .social-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
+  font-size: 20px;
+  color: #4CAF50;
+  background-color: transparent;
+  border-radius: 50%;
+  transition: color 0.3s ease;
+  text-decoration: none;
 }
 
-.social-icons a {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-}
-
-.social-icons img {
-  width: 100%;
-  height: auto;
-  filter: brightness(0) invert(1);
-  transition: transform 0.3s ease;
-}
-
-.social-icons a:hover img {
-  transform: scale(1.1);
-  filter: brightness(1) invert(0.8);
-}
-
-.footer-bottom {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #bbb;
+.social-icons .social-link:hover {
+  color: #89dd8e;
 }
