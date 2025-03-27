@@ -138,18 +138,14 @@ body {
   height: 100px;
 }
 
-.img-h3 {
+.img-logo {
   display: flex;
   align-items: center;
-  gap: 10px; 
-}
-
-.img-h3 img {
+  gap: 10px;
   width: auto;
   height: 50px; 
-  margin-bottom: 20px;
+  margin-bottom: 22px; 
 }
-
 
 .footer-section h4 {
   font-size: 18px;
