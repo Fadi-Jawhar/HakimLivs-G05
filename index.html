@@ -31,9 +31,18 @@
             
             <nav class="main-nav">
                 <div class="container">
-
-                    <ul>
-                        <li class="category"><a href="#">Kategori ▼</a></li>
+                    <div class="nav-left">
+                        <select id="filterCategory" class="form-select">
+                            <option value="all">Kategorier</option>
+                            <option value="vegetables">Grönsaker</option>
+                            <option value="fruits">Frukt</option>
+                            <option value="fish">Fisk</option>
+                            <option value="meat">Kyckling & Kött</option>
+                            <option value="drink">Dryck</option>
+                            <option value="mejeri">Mejeri</option>
+                        </select>
+                    </div>
+                    <ul class="nav-menu">
                         <li><a href="#">Sidor ▼</a></li>
                         <li><a href="#">Produkter</a></li>
                         <li><a href="#">Om Oss</a></li>
@@ -41,6 +50,7 @@
                     </ul>
                 </div>
             </nav>
+            
     </header>
     
 </body>
