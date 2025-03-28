@@ -1,6 +1,5 @@
 export function getBaseUrl() {
   if (!window.location.href.includes('localhost')) {
-    console.log('hej!')
     return "https://hakim-livs-g05-be.vercel.app/"
   }
   return "http://localhost:3000/";
