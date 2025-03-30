@@ -95,6 +95,34 @@ body {
 .cart:hover{
   background: #dddcdc;
 }
+.container-2{
+  max-width: 1200px;
+  height: 70px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.nav-left {
+  position: relative;
+  border-right: 1px solid #0000004d; 
+  padding-right: 20px; 
+}
+#filterCategory {
+  margin: auto;
+  padding: 10px;
+  border: white;
+  font-size: 16px;
+  color:rgb(85, 85, 85);
+  cursor: pointer;
+  appearance: none;
+  width: 180px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+#filterCategory:hover{
+  background: #dddcdc;
+}
 
 .main-nav {
   background: white;
@@ -117,15 +145,13 @@ body {
 
 .main-nav ul li {
   margin: 0 15px;
-  margin-right: 50px;
 }
 
 .main-nav ul li a {
   text-decoration: none;
-  color: rgb(85, 85, 85);
+  color: rgb(126, 126, 126);
   font-size: 16px;
-  font-weight: bold;
-  margin-right: 70px;
+
 }
 
 @media (max-width: 768px) {
@@ -138,33 +164,4 @@ body {
   .main-nav .menu-toggle {
       display: block;
   }
-}
-.nav-left {
-  position: relative;
-}
-
-#filterCategory {
-  padding: 10px;
-  border: white;
-  font-size: 16px;
-  color:rgb(85, 85, 85);
-  cursor: pointer;
-  appearance: none;
-  width: 180px;
-  font-weight: bold;
-  border-radius: 5px;
-}
-#filterCategory:hover{
-  background: #dddcdc;
-}
-
-.nav-left::after {
-  content: "\f107"; 
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  color: #4b4b4b;
-  pointer-events: none;
 }
