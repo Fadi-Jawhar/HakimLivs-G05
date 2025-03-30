@@ -5,9 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="index.js" defer ></script>
-    <title>Document</title>
+    <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
+    <title>Home</title>
 </head>
 <body>
+    <div class="top-frame"></div> 
+    <header> 
+            <div class="top-nav">
+                <div class="container">
+                    <div class="logo">
+                        <img src="img/Screenshot 2025-03-28 at 13.39.48.png" alt="Hakim Livs Logo">
+                        </div>
+                 
+                    <div class="search-bar">
+                        <input type="text" placeholder="Sök">
+                        <button type="button" aria-label="Search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <div class="auth-menu">
+                        <a href="#" class="login-btn"><i class="fa-regular fa-user"></i> Logga in</a>
+                        <a href="#" class="cart"><i class="fa-solid fa-cart-shopping"></i> Varukorg</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <nav class="main-nav">
+                <div class="container-2">
+                    <div class="nav-left">
+                        <select id="filterCategory" class="form-select">
+                            <option value="all">Kategorier</option>
+                            <option value="vegetables">Grönsaker</option>
+                            <option value="fruits">Frukt</option>
+                            <option value="fish">Fisk</option>
+                            <option value="meat">Kyckling & Kött</option>
+                            <option value="drink">Dryck</option>
+                            <option value="mejeri">Mejeri</option>
+                        </select>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </div>
+
+                    <div class="nav-right">
+                    <ul class="nav-menu">
+                        <li><a href="#">Produkter</a></li>
+                        <li><a href="#">Om Oss</a></li>
+                        <li><a href="#">Kontakta Oss</a></li>
+                    </ul>
+                </div>
+                </div>
+            </nav>
+            
+    </header>
     
 </body>
 </html>
