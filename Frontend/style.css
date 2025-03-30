@@ -1,9 +1,17 @@
+:root {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: rgb(85, 85, 85);
+  min-width: 320px;
+  min-height: 100vh;
 }
+
+/* Header */
+
 .top-frame {
   background: #222;
   height: 50px;
@@ -110,6 +118,67 @@ body {
 }
 #filterCategory {
   margin: auto;
+  padding: 10px;
+  border: white;
+  font-size: 16px;
+  color:rgb(85, 85, 85);
+  cursor: pointer;
+  appearance: none;
+  width: 180px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+#filterCategory:hover{
+  background: #dddcdc;
+}
+
+.main-nav {
+  background: white;
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav .menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav ul li {
+  margin: 0 15px;
+}
+
+.main-nav ul li a {
+  text-decoration: none;
+  color: rgb(126, 126, 126);
+  font-size: 16px;
+
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+      max-width: 200px;
+  }
+  .main-nav ul {
+      display: none;
+  }
+  .main-nav .menu-toggle {
+      display: block;
+  }
+}
+
+/* Main Content */
+.main-content {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
 }
 
 /* Products */
@@ -132,11 +201,11 @@ body {
   cursor: pointer;
 }
 
-.main-nav ul {
-  list-style: none;
+/* Login */
+.login-form {
   display: flex;
-  padding: 0;
-  margin: 0;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .form-group {
