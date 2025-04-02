@@ -1,20 +1,15 @@
 import { fetchProducts } from "../utils/api.js";
 
-// Make sure we have a cart array and all required DOM elements
 let cart = [];
 
-// Wait for DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize cart elements
   initializeCart();
-  
-  // Load products
+
   loadProducts();
 });
 
-// Initialize all cart-related elements and event listeners
 function initializeCart() {
-  // Check if all required elements exist
+
   const cartButton = document.getElementById('cartButton');
   const cartModal = document.getElementById('cartModal');
   const closeModal = document.querySelector('.close-modal');
@@ -24,7 +19,7 @@ function initializeCart() {
   const checkoutButton = document.getElementById('checkoutButton');
   const emptyCart = document.querySelector('.empty-cart');
 
-  // Check if any elements are missing and log errors
+
   if (!cartButton) console.error("Missing element: cartButton");
   if (!cartModal) console.error("Missing element: cartModal");
   if (!closeModal) console.error("Missing element: closeModal");
@@ -34,7 +29,7 @@ function initializeCart() {
   if (!checkoutButton) console.error("Missing element: checkoutButton");
   if (!emptyCart) console.error("Missing element: emptyCart");
 
-  // Only add event listeners if elements exist
+
   if (cartButton) {
     cartButton.addEventListener('click', (e) => {
       e.preventDefault();
@@ -66,11 +61,11 @@ function initializeCart() {
     });
   }
 
-  // Initialize cart counter
+ 
   if (cartCounter) cartCounter.textContent = '0';
 }
 
-// Function to fetch and render products
+
 async function loadProducts() {
   const productsContainer = document.getElementById("products");
   
@@ -87,9 +82,9 @@ async function loadProducts() {
 
     if (products && products.length > 0) {
       products.forEach((product) => {
-        // Make sure product has an id
+       
         if (!product.id && product.id !== 0) {
-          // Generate an id if missing
+     
           product.id = 'product-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
         }
         
@@ -105,12 +100,12 @@ async function loadProducts() {
   }
 }
 
-// Function to create an individual product card
+
 function createProductCard(product) {
   const element = document.createElement("div");
   element.className = "product-card";
 
-  // Make sure we have a price that can be formatted
+
   const price = typeof product.price === 'number' ? product.price.toFixed(2) : product.price;
 
   element.innerHTML = `
@@ -130,7 +125,7 @@ function createProductCard(product) {
   return element;
 }
 
-// Lägg till produkt i varukorg
+
 function addToCart(product) {
   console.log("Adding to cart function called with:", product);
   
@@ -159,7 +154,7 @@ function addToCart(product) {
   showNotification(`${product.name} har lagts till i varukorgen!`);
 }
 
-// Visa notifikation
+
 function showNotification(message) {
   const notification = document.createElement('div');
   notification.className = 'notification';
@@ -178,7 +173,6 @@ function showNotification(message) {
   }, 3000);
 }
 
-// Uppdatera varukorgsvisningen
 function updateCartDisplay() {
   console.log("Updating cart display");
   
@@ -193,12 +187,12 @@ function updateCartDisplay() {
     return;
   }
   
-  // Uppdatera räknare
+
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   cartCounter.textContent = totalItems;
   console.log("Total items in cart:", totalItems);
   
-  // Visa tom varukorg eller innehåll
+
   if (cart.length === 0) {
     emptyCart.style.display = 'block';
     cartItems.style.display = 'none';
@@ -215,7 +209,7 @@ function updateCartDisplay() {
   }
 }
 
-// Rendera varukorgens innehåll
+
 function renderCartItems() {
   const cartItems = document.getElementById('cartItems');
   if (!cartItems) {
@@ -245,7 +239,6 @@ function renderCartItems() {
     cartItems.appendChild(itemElement);
   });
   
-  // Lägg till event listeners för +/- knapparna
   document.querySelectorAll('.decrease').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = e.target.getAttribute('data-id');
@@ -263,7 +256,6 @@ function renderCartItems() {
   });
 }
 
-// Uppdatera kvantitet
 function updateQuantity(id, change) {
   console.log(`Updating quantity for item ${id} by ${change}`);
   
@@ -289,7 +281,7 @@ function updateQuantity(id, change) {
   }
 }
 
-// Uppdatera totalsumma
+
 function updateCartTotal() {
   const cartTotal = document.getElementById('cartTotal');
   if (!cartTotal) {
@@ -302,25 +294,4 @@ function updateCartTotal() {
   console.log("Cart total updated to:", total);
 }
 
-// CSS för notifikationer
-const style = document.createElement('style');
-style.textContent = `
-.notification {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #2a9134;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1001;
-}
-.notification.show {
-  opacity: 1;
-}
-`;
 document.head.appendChild(style);

@@ -566,3 +566,20 @@ body {
   background-color: #ccc;
   cursor: not-allowed;
 }
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2a9134;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
+}
+.notification.show {
+  opacity: 1;
+}
