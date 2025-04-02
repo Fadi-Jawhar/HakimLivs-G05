@@ -15,8 +15,21 @@ export function getBaseUrl() {
     }
     return [];    
   }
+
+  export async function fetchCategorys(endpoint = "api/category") {
+
+    const url = `${getBaseUrl()}${endpoint}`;
+    const response = await fetch(url);
+    if(response.ok){
+      const data = await response.json();
+      return data;
+    }
+    return [];    
+  }
+  
   document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
+
   });
 
   async function renderProducts() {
@@ -102,4 +115,3 @@ export function getBaseUrl() {
 
 
 
-  
