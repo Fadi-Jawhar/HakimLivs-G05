@@ -1,86 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login & Register</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-      }
-      .container {
-        width: 300px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      input,
-      button {
-        width: 100%;
-        padding: 10px;
-        margin: 5px 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Registrera</h2>
-      <input type="text" id="register-username" placeholder="Användarnamn" />
-      <input type="password" id="register-password" placeholder="Lösenord" />
-      <button onclick="registerUser()">Registrera</button>
-      <p id="register-message"></p>
-    </div>
-
-    <div class="container">
-      <h2>Logga in</h2>
-      <input type="text" id="login-username" placeholder="Användarnamn" />
-      <input type="password" id="login-password" placeholder="Lösenord" />
-      <button onclick="loginUser()">Logga in</button>
-      <p id="login-message"></p>
-    </div>
-
-    <script>
-      const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
-
-      async function registerUser() {
-        const username = document.getElementById("register-username").value;
-        const password = document.getElementById("register-password").value;
-        const response = await fetch(baseUrl + "api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        document.getElementById("register-message").innerText = response.ok
-          ? "Registrering lyckades!"
-          : "Fel: " + data.message;
-      }
-
-      async function loginUser() {
-        const username = document.getElementById("login-username").value;
-        const password = document.getElementById("login-password").value;
-        const response = await fetch(baseUrl + "api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          document.getElementById("login-message").innerText =
-            "Inloggning lyckades!";
-          setTimeout(() => {
-            window.location.href = "index.html";
-          }, 1000);
-        } else {
-          document.getElementById("login-message").innerText =
-            "Fel användarnamn eller lösenord ";
-        }
-      }
-    </script>
-  </body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,54 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login - Hakim Livs</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="/Frontend/login.js" type="module" defer></script>
+
+  <style>
+    .login-image {
+      height: 100vh; /* Se till att bilden täcker hela höjden */
+      object-fit: cover; /* Gör så att bilden fyller hela ytan */
+    }
+  </style>
 </head>
 <body>
   <section class="vh-100">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6 text-black">
-          <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-            <form style="width: 23rem;">
-            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Välkommen tillbaka! Logga in  👇</h3>
-  
-            <div class="form-floating mb-3">
-              <input type="username" class="form-control" id="username" placeholder="" required>
-              <label for="text" class="text-dark">E-postadress</label>
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        
+        <!-- Formulär -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+          <div class="w-75">
+            <h3 class="fw-normal mb-3 pb-3">Välkommen tillbaka! Logga in 👇</h3>
+
+            <form>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" placeholder="" required>
+                <label for="username" class="text-dark">E-postadress</label>
               </div>
-  
+
               <div class="form-floating mb-3">
                 <input type="password" class="form-control" id="password" placeholder="" required>
                 <label for="password" class="text-dark">Lösenord</label>
-                </div>
-                <div>
+              </div>
 
-                  <p id="error" class="text-danger text-center fw-semibold mt-4"></p>
-                  </div>
-                  <p id="succes" class="text-succes text-center fw-semibold mt-4"></p>
-                </div>
-                  
+              <p id="error" class="text-danger text-center fw-semibold mt-4"></p>
+              <p id="succes" class="text-success text-center fw-semibold mt-4"></p>
+
               <div class="pt-1 mb-4">
                 <button class="w-100 btn btn-lg btn-dark" id="btn-login">Logga in</button>
               </div>
-  
-              <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Är du administratör?</a></p>
+
+              <p class="small"><a class="text-muted" href="#">Är du administratör?</a></p>
               <p>Inget konto? <a href="/Frontend/register.html" class="text-muted">Registrera dig här!</a></p>
             </form>
           </div>
-  
         </div>
 
-        <!-- <div class="col-sm-6 px-0 d-none d-sm-block">
-          <img src="/Frontend/src/img/login.jpg"
-            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
-        </div> -->
+        <!-- Bild -->
+        <div class="col-md-6 p-0">
+          <img src="/Frontend/img/login.jpg" alt="Login image" class="w-100 login-image">
+        </div>
+
       </div>
     </div>
   </section>
 </body>
 </html>
+
+
 
 
