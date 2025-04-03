@@ -133,29 +133,20 @@
 
               <div class="mb-3">
                 <label for="productPrice" class="form-label">Pris:</label>
-                <input type="text" class="form-control" id="productPrice" min="1" required>
+                <input type="number" class="form-control" id="productPrice" required>
               </div>
 
               <div class="mb-3">
                 <label for="orderStock" class="form-label">Lagerstatus</label>
-                <select class="form-control form-select" id="orderStock" required>
-                  <option value="inStock">I lager</option>
-                  <option value="pending">Väntande</option>
-                  <option value="outOfStock">Slut</option>
-                </select>
+                <input type="number" class="form-control" id="orderStock" required>
               </div>
               
 
               <div class="mb-3">
                 <label for="productCategory" class="form-label">Kategori</label>
                 <select class="form-control form-select" id="productCategory" required>
-                    <option value="vegetables">Grönsaker</option>
-                    <option value="fruits">Frukt</option>
-                    <option value="fish">Fisk</option>
-                    <option value="meat">Kyckling & Kött</option>
-                    <option value="drink">Dryck</option>
-                    <option value="mejeri">Mejeri</option>
-                </select>
+                  <option value="">Välj en kategori</option>
+              </select>
               </div>
 
               <div class="mb-3">
