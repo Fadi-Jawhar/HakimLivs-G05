@@ -61,3 +61,37 @@ export async function fetchCategories() {
     return [];
   }
 }
+
+export async function registerUser(userData) {
+  const url = `${getBaseUrl()}api/auth/register`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+  
+  if (response.ok) {
+    return await response.json();
+  } else {
+    throw new Error("Failed to register user");
+  }
+}
+
+export async function loginUser(credentials) {
+  const url = `${getBaseUrl()}api/auth/login`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+  
+  if (response.ok) {
+    return await response.json();
+  } else {
+    throw new Error("Failed to login");
+  }
+}
