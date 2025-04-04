@@ -76,6 +76,21 @@ import {
     const stock = parseInt(document.getElementById("orderStock").value);
     const category = document.getElementById("productCategory").value;
     const imageUrl = document.getElementById("productImageUrl").value;
+
+    if (!name || !price || !stock || !category) {
+      alert("Alla fält måste fyllas i.");
+      return;
+  }
+        // Validering för negativa värden
+        if (isNaN(price) || price < 0) {
+          alert("Priset kan inte vara negativt.");
+          return;
+      }
+      
+      if (isNaN(stock) || stock < 0) {
+          alert("Lagerstatus kan inte vara negativ.");
+          return;
+      }
   
     const product = { name, description, price, stock, category, imageUrl };
   
