@@ -32,7 +32,7 @@ import {
           </button>
         </td>
       `;
-      tbody.appendChild(row);
+      tbody.append(row);
     });
   
     attachEventListeners();
@@ -46,7 +46,7 @@ import {
       const option = document.createElement("option");
       option.value = cat._id;
       option.textContent = cat.category;
-      select.appendChild(option);
+      select.append(option);
     });
   }
 
