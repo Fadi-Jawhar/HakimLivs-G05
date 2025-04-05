@@ -1,5 +1,8 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
 :root {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #333;
   background-color: #fff;
 }
@@ -180,6 +183,46 @@ body {
   max-width: 800px;
   margin: auto;
 }
+
+/*Hero section*/
+.hero {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.hero-img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 253, 253, 0.741); /* mjuk overlay */
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  text-align: center;
+  color: rgb(50, 57, 48);
+  max-width: 80%;
+}
+
+
+.hero-title {
+  font-size: 3rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+
 
 /* Products */
 #products {
@@ -568,7 +611,7 @@ body {
 }
 
 .notification {
-  position: absolute; /* Ändrat från fixed */
+  position: absolute; 
   background: #4CAF50;
   color: white;
   padding: 12px 24px;
