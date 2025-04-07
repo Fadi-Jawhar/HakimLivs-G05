@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hakim Livs - Checkout</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
+  <script type="module" src="checkout.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="top-nav">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                  <img src="img/Screenshot 2025-03-28 at 13.39.48.png" alt="Hakim Livs Logo">
+                </a>
+              </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Sök">
+                <button type="button" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="auth-menu">
+                <a href="./login.html" class="login-btn"><i class="fa-regular fa-user"></i> Logga in</a>
+                <a href="#" id="cartButton" class="cart">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  <span class="cart-text">Varukorg</span>
+                  <span id="cartCounter" class="cart-counter">0</span>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    <nav class="main-nav">
+        <div class="container-2">
+            <div class="nav-left">
+                <select id="filterCategory" class="form-select">
+                    <option value="all">Kategorier</option>
+                    <option value="vegetables">Grönsaker</option>
+                    <option value="fruits">Frukt</option>
+                    <option value="fish">Fisk</option>
+                    <option value="meat">Kyckling & Kött</option>
+                    <option value="drink">Dryck</option>
+                    <option value="mejeri">Mejeri</option>
+                </select>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+
+            <div class="nav-right">
+            <ul class="nav-menu">
+                <li><a href="products.html">Produkter</a></li>
+                <li><a href="#">Om Oss</a></li>
+                <li><a href="#">Kontakta Oss</a></li>
+            </ul>
+        </div>
+        </div>
+    </nav>  
+  </header>
+
+  
+  <main class="checkout-container">
+    <h2>Checka ut</h2>
+    <div class="checkout-grid">
+      <!-- Varukorg sektion -->
+      <section class="cart-items-section">
+        <h3>Din varukorg</h3>
+        <div id="cartItemsContainer">
+          <!-- Här renderas varukorgen dynamiskt -->
+          <div class="loading-spinner">
+            <i class="fa-solid fa-spinner fa-spin"></i> Laddar din varukorg...
+          </div>
+        </div>
+        <div class="cart-totals">
+          <p class="cart-subtotal">Delsumma: <span id="cartSubtotal">0 kr</span></p>
+          <p>Leverans: <strong>Gratis</strong></p>
+          <p class="cart-total">Totalt: <strong id="cartTotal">0 kr</strong></p>
+        </div>
+      </section>
+
+      <!-- Fakturering och leveransformulär -->
+      <section class="billing-form">
+        <h3>Faktureringsinformation</h3>
+        <form id="checkoutForm">
+          <div class="form-row">
+            <input type="text" name="firstName" placeholder="Förnamn" required />
+            <input type="text" name="lastName" placeholder="Efternamn" required />
+          </div>
+          <input type="text" name="company" placeholder="Företagsnamn (valfritt)" />
+          <input type="text" name="address" placeholder="Adress" required />
+
+          <div class="form-row">
+            <select name="country" required>
+              <option value="">Välj Land</option>
+              <option value="Sverige" selected>Sverige</option>
+            </select>
+            <input type="text" name="city" placeholder="Stad" required />
+            <input type="text" name="zip" placeholder="Postnummer" required />
+          </div>
+          <div class="form-row">
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="tel" name="phone" placeholder="Telefonnummer" required />
+          </div>
+          <label>
+            <input type="checkbox" name="shipToDifferent" id="shipToDifferent"> Leverera till annan adress
+          </label>
+
+          <div id="shippingAddressFields" style="display: none; margin-top: 20px;">
+            <h4>Leveransadress</h4>
+            <div class="form-row">
+              <input type="text" name="shippingFirstName" placeholder="Förnamn" />
+              <input type="text" name="shippingLastName" placeholder="Efternamn" />
+            </div>
+            <input type="text" name="shippingAddress" placeholder="Adress" />
+            <div class="form-row">
+              <input type="text" name="shippingCity" placeholder="Stad" />
+              <input type="text" name="shippingZip" placeholder="Postnummer" />
+            </div>
+          </div>
+
+          <h4>Övrig information</h4>
+          <textarea name="notes" placeholder="Anteckningar om din order..."></textarea>
+        </form>
+      </section>
+
+      <!-- Betalningsmetod -->
+      <section class="payment-methods">
+        <h3>Betalningsmetod</h3>
+        <div class="payment-options">
+          <div class="payment-option">
+            <input type="radio" id="paymentSwish" name="payment" value="swish" checked />
+            <label for="paymentSwish">
+              <img src="img/Swishh.webp" alt="Swish" class="payment-logo" />
+              <span>Swish</span>
+            </label>
+          </div>
+        </div>
+        
+        <div id="swishDetails" class="payment-details">
+          <p>Betala enkelt med Swish. Du kommer att få ett meddelande i din Swish-app för att bekräfta betalningen.</p>
+          <div class="input-group">
+            <label for="swishPhone">Swish-telefonnummer</label>
+            <input type="tel" id="swishPhone" name="swishPhone" placeholder="07XXXXXXXX" pattern="07[0-9]{8}" required />
+            <small>Ditt Swish-registrerade telefonnummer</small>
+          </div>
+        </div>
+        
+        <div class="checkout-actions">
+          <button id="placeOrderBtn" class="checkout-button">
+            <i class="fa-solid fa-lock"></i> Betala med Swish
+          </button>
+        </div>
+
+        <div id="progressIndicator" class="progress-indicator hidden">
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="paymentProgressBar"></div>
+          </div>
+          <div class="progress-status">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span id="progressStatus">Initierar betalning...</span>
+          </div>
+        </div>
+
+        <p id="errorMessage" class="error-message hidden"></p>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-slogan">
+        <img src="./src/icons/Pris.png" alt="pris">
+        <img src="./src/icons/ÅterBetalning.png" alt="pris">
+        <img src="./src/icons/FriLeverans.png" alt="pris">
+      </div>
+      <div class="footer-left">
+        <div class="footer-section">
+          <div class="img-logo">
+            <img src="./src/icons/Logga.png" alt="matkasse">
+          </div>
+          <div class="contact-info">
+            <p><i class="fas fa-map-marker-alt"></i> Address: Livsvägen 83</p>
+            <p><i class="fas fa-phone"></i> Kontakta oss: 08-702 00 90</p>
+            <p><i class="fas fa-envelope"></i> Email: hakimlivs@contact.com</p>
+            <p><i class="fas fa-clock"></i> Öppettider: Varje dag, 8:00 - 20:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-section">
+          <h4>Konto</h4>
+          <ul>
+            <li><a href="#">Önskelista</a></li>
+            <li><a href="#">Varukorg</a></li>
+            <li><a href="#">Spåra Leverans</a></li>
+            <li><a href="#">Leveransinformation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Hitta enkelt</h4>
+          <ul>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Kontakt</a></li>
+            <li><a href="#">Kampanjer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Help Center</h4>
+          <ul>
+            <li><a href="#">Betalning</a></li>
+            <li><a href="#">Återbetalning</a></li>
+            <li><a href="#">Kassa</a></li>
+            <li><a href="#">Leverans</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025, All rights reserved</p>
+      <div class="payment-icon">
+        <img src="./src/icons/visa-mastercard.png" alt="Visa" />
+      </div>
+      <div class="social-icons">
+        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i>
+          <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Add this script to your checkout page to debug cart issues
+    document.addEventListener("DOMContentLoaded", () => {
+  console.clear();
+  console.log("=== CART DEBUGGING ===");
+
+  // Hämta varukorgen från localStorage
+  const rawCart = localStorage.getItem("cart");
+  console.log("Raw cart from localStorage:", rawCart);
+
+  // Försök att parsa varukorgen
+  try {
+    const parsedCart = JSON.parse(rawCart);
+    console.log("Parsed cart:", parsedCart);
+    
+    if (!parsedCart || !Array.isArray(parsedCart)) {
+      console.error("Cart is not a valid array");
+    } else if (parsedCart.length === 0) {
+      console.warn("Cart is empty");
+      // Visa ett meddelande om att varukorgen är tom
+      document.getElementById("cartItemsContainer").innerHTML = "<p>Din varukorg är tom.</p>";
+    } else {
+      console.log("Cart contains items:", parsedCart.length);
+      
+      // Rendera varukorgen
+      renderCart(parsedCart);
+    }
+  } catch (e) {
+    console.error("Failed to parse cart:", e);
+  }
+});
+
+function renderCart(cart) {
+  const cartItemsContainer = document.getElementById("cartItemsContainer");
+  let cartSubtotal = 0;
+  let cartTotal = 0;
+
+  cartItemsContainer.innerHTML = ''; // Töm varukorgscontainern innan vi börjar lägga till produkter
+
+  // Skapa HTML för varje produkt i varukorgen
+  cart.forEach((item, index) => {
+    cartSubtotal += item.price * item.quantity;
+    cartTotal += item.price * item.quantity;
+
+    const itemElement = document.createElement("div");
+    itemElement.classList.add("cart-item");
+    itemElement.innerHTML = `
+      <div class="product-info">
+        <span class="product-name">${item.name}</span>
+      </div>
+      <div class="product-price">${item.price} kr</div>
+      <div class="quantity-controls">
+        <button class="quantity-btn decrement" data-index="${index}">-</button>
+        <input type="number" value="${item.quantity}" min="1" class="quantity-input" data-index="${index}">
+        <button class="quantity-btn increment" data-index="${index}">+</button>
+      </div>
+      <div class="product-total">
+        ${(item.price * item.quantity).toFixed(2)} kr
+        <button class="remove-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    cartItemsContainer.appendChild(itemElement);
+  });
+
+  // Uppdatera totalsumman
+  document.getElementById("cartSubtotal").textContent = `${cartSubtotal.toFixed(2)} kr`;
+  document.getElementById("cartTotal").textContent = `${cartTotal.toFixed(2)} kr`;
+
+  // Lägg till eventlyssnare för att uppdatera kvantitet eller ta bort produkter
+  setupEventListeners(cart);
+}
+
+function setupEventListeners(cart) {
+  // Justera antal produkter
+  const decrementButtons = document.querySelectorAll(".decrement");
+  const incrementButtons = document.querySelectorAll(".increment");
+  const quantityInputs = document.querySelectorAll(".quantity-input");
+  
+  decrementButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+      const index = e.target.getAttribute("data-index");
+      if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+        updateCart(cart);
+      }
+    });
+  });
+
+  incrementButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+      const index = e.target.getAttribute("data-index");
+      cart[index].quantity++;
+      updateCart(cart);
+    });
+  });
+
+  quantityInputs.forEach(input => {
+    input.addEventListener("change", (e) => {
+      const index = e.target.getAttribute("data-index");
+      const newQuantity = parseInt(e.target.value);
+      if (newQuantity > 0) {
+        cart[index].quantity = newQuantity;
+        updateCart(cart);
+      } else {
+        alert("Antal kan inte vara mindre än 1.");
+      }
+    });
+  });
+
+  // Ta bort produkter
+  const removeButtons = document.querySelectorAll(".remove-btn");
+  removeButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+      const index = e.target.getAttribute("data-index");
+      cart.splice(index, 1); // Ta bort produkten från arrayen
+      updateCart(cart);
+    });
+  });
+}
+
+function updateCart(cart) {
+  // Uppdatera varukorgen i localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Återrendera varukorgen
+  renderCart(cart);
+}
+
+  </script>
+</body>
+
+</html>
