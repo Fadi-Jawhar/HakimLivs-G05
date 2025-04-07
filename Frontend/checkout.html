@@ -68,11 +68,11 @@
   <main class="checkout-container">
     <h2>Checka ut</h2>
     <div class="checkout-grid">
-      <!-- Varukorg sektion -->
+
       <section class="cart-items-section">
         <h3>Din varukorg</h3>
         <div id="cartItemsContainer">
-          <!-- Här renderas varukorgen dynamiskt -->
+       
           <div class="loading-spinner">
             <i class="fa-solid fa-spinner fa-spin"></i> Laddar din varukorg...
           </div>
@@ -84,7 +84,6 @@
         </div>
       </section>
 
-      <!-- Fakturering och leveransformulär -->
       <section class="billing-form">
         <h3>Faktureringsinformation</h3>
         <form id="checkoutForm">
@@ -129,7 +128,6 @@
         </form>
       </section>
 
-      <!-- Betalningsmetod -->
       <section class="payment-methods">
         <h3>Betalningsmetod</h3>
         <div class="payment-options">
@@ -239,16 +237,15 @@
   </footer>
 
   <script>
-    // Add this script to your checkout page to debug cart issues
+
     document.addEventListener("DOMContentLoaded", () => {
   console.clear();
   console.log("=== CART DEBUGGING ===");
 
-  // Hämta varukorgen från localStorage
   const rawCart = localStorage.getItem("cart");
   console.log("Raw cart from localStorage:", rawCart);
 
-  // Försök att parsa varukorgen
+  
   try {
     const parsedCart = JSON.parse(rawCart);
     console.log("Parsed cart:", parsedCart);
@@ -257,12 +254,12 @@
       console.error("Cart is not a valid array");
     } else if (parsedCart.length === 0) {
       console.warn("Cart is empty");
-      // Visa ett meddelande om att varukorgen är tom
+
       document.getElementById("cartItemsContainer").innerHTML = "<p>Din varukorg är tom.</p>";
     } else {
       console.log("Cart contains items:", parsedCart.length);
       
-      // Rendera varukorgen
+
       renderCart(parsedCart);
     }
   } catch (e) {
@@ -275,9 +272,9 @@ function renderCart(cart) {
   let cartSubtotal = 0;
   let cartTotal = 0;
 
-  cartItemsContainer.innerHTML = ''; // Töm varukorgscontainern innan vi börjar lägga till produkter
+  cartItemsContainer.innerHTML = ''; 
 
-  // Skapa HTML för varje produkt i varukorgen
+
   cart.forEach((item, index) => {
     cartSubtotal += item.price * item.quantity;
     cartTotal += item.price * item.quantity;
@@ -302,16 +299,14 @@ function renderCart(cart) {
     cartItemsContainer.appendChild(itemElement);
   });
 
-  // Uppdatera totalsumman
   document.getElementById("cartSubtotal").textContent = `${cartSubtotal.toFixed(2)} kr`;
   document.getElementById("cartTotal").textContent = `${cartTotal.toFixed(2)} kr`;
 
-  // Lägg till eventlyssnare för att uppdatera kvantitet eller ta bort produkter
   setupEventListeners(cart);
 }
 
 function setupEventListeners(cart) {
-  // Justera antal produkter
+
   const decrementButtons = document.querySelectorAll(".decrement");
   const incrementButtons = document.querySelectorAll(".increment");
   const quantityInputs = document.querySelectorAll(".quantity-input");
@@ -347,7 +342,7 @@ function setupEventListeners(cart) {
     });
   });
 
-  // Ta bort produkter
+ 
   const removeButtons = document.querySelectorAll(".remove-btn");
   removeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
@@ -359,10 +354,10 @@ function setupEventListeners(cart) {
 }
 
 function updateCart(cart) {
-  // Uppdatera varukorgen i localStorage
+
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  // Återrendera varukorgen
+
   renderCart(cart);
 }
 

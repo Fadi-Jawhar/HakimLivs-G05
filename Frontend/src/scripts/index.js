@@ -56,13 +56,9 @@ function initializeCart() {
 
   if (checkoutButton) {
     checkoutButton.addEventListener("click", () => {
-      // Ta bort denna rad som rensar varukorgen:
-      // cart = []; 
     
-      // Vi låter varukorgen vara kvar och sparar den till localStorage
       saveCartToLocalStorage();
-      
-      // Omdirigerar till checkout-sidan
+
       window.location.href = 'checkout.html';
     });
     

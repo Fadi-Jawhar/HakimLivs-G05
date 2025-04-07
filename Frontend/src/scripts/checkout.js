@@ -1,6 +1,4 @@
-// checkout.js
 
-// Hjälpfunktioner
 const getCartFromStorage = () => JSON.parse(localStorage.getItem("cart")) || [];
 const updateCartCounter = () => {
   const cart = getCartFromStorage();
@@ -10,7 +8,6 @@ const updateCartCounter = () => {
   }
 };
 
-// Huvudfunktionalitet
 document.addEventListener("DOMContentLoaded", () => {
   initializeCheckout();
 });
@@ -21,7 +18,7 @@ function initializeCheckout() {
   updateCartCounter();
 }
 
-// Renderar varukorgen
+
 function renderCartItems() {
   const cartContainer = document.getElementById("cartItemsContainer");
   const cart = getCartFromStorage();
@@ -31,7 +28,6 @@ function renderCartItems() {
     return;
   }
 
-  // Remove loading spinner
   cartContainer.innerHTML = "";
 
   if (cart.length === 0) {
@@ -77,12 +73,10 @@ function renderCartItems() {
   toggleCheckoutButton(true);
 }
 
-// Beräkna totalsumma
 function calculateTotal(cart) {
   return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
-// Uppdatera totalsummor
 function updateTotals(total) {
   const subtotalElement = document.getElementById("cartSubtotal");
   const totalElement = document.getElementById("cartTotal");
@@ -91,26 +85,24 @@ function updateTotals(total) {
   if (totalElement) totalElement.textContent = `${total.toFixed(2)} kr`;
 }
 
-// Event listeners
 function setupEventListeners() {
-  // Delegated events för dynamiskt skapade element
+
   document.addEventListener("click", handleCartActions);
   document.addEventListener("input", handleQuantityInput);
   
-  // Leveransadress toggle
+
   const shipToDifferentCheckbox = document.getElementById("shipToDifferent");
   if (shipToDifferentCheckbox) {
     shipToDifferentCheckbox.addEventListener("change", toggleShippingAddress);
   }
   
-  // Betalningsknapp
+
   const orderButton = document.getElementById("placeOrderBtn");
   if (orderButton) {
     orderButton.addEventListener("click", handlePayment);
   }
 }
 
-// Toggle shipping address fields
 function toggleShippingAddress(e) {
   const shippingFields = document.getElementById("shippingAddressFields");
   if (shippingFields) {
@@ -118,7 +110,6 @@ function toggleShippingAddress(e) {
   }
 }
 
-// Hantera varukorgsåtgärder
 function handleCartActions(e) {
   const cartItem = e.target.closest(".cart-item");
   if (!cartItem) return;
@@ -135,7 +126,6 @@ function handleCartActions(e) {
   }
 }
 
-// Hantera kvantitetsinput
 function handleQuantityInput(e) {
   if (!e.target.classList.contains("quantity-input")) return;
   
@@ -146,7 +136,6 @@ function handleQuantityInput(e) {
   updateQuantityAbsolute(itemId, newQuantity);
 }
 
-// Uppdatera kvantitet
 function updateQuantity(itemId, change, cart) {
   const index = cart.findIndex(item => item.id === itemId);
   if (index === -1) return;
@@ -164,7 +153,6 @@ function updateQuantity(itemId, change, cart) {
   showNotification(`Varukorg uppdaterad`);
 }
 
-// Uppdatera absolut kvantitet
 function updateQuantityAbsolute(itemId, quantity) {
   const cart = getCartFromStorage();
   const index = cart.findIndex(item => item.id === itemId);
@@ -179,7 +167,6 @@ function updateQuantityAbsolute(itemId, quantity) {
   showNotification(`Varukorg uppdaterad`);
 }
 
-// Ta bort produkt
 function removeItem(itemId, cart) {
   const newCart = cart.filter(item => item.id !== itemId);
   saveCart(newCart);
@@ -187,7 +174,6 @@ function removeItem(itemId, cart) {
   showNotification(`Produkt borttagen`);
 }
 
-// Visa notifikationer
 function showNotification(message, type = "success") {
   const notification = document.createElement("div");
   notification.className = `notification ${type}`;
@@ -200,13 +186,11 @@ function showNotification(message, type = "success") {
   setTimeout(() => notification.remove(), 3000);
 }
 
-// Sparar varukorg
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCounter();
 }
 
-// Toggle checkout-knapp
 function toggleCheckoutButton(enable) {
   const btn = document.getElementById("placeOrderBtn");
   if (btn) {
@@ -215,7 +199,6 @@ function toggleCheckoutButton(enable) {
   }
 }
 
-// Betalningshantering
 async function handlePayment(e) {
   e.preventDefault();
   
@@ -230,7 +213,6 @@ async function handlePayment(e) {
   }
 }
 
-// Validera formulär
 function validateForm() {
   const form = document.getElementById("checkoutForm");
   const swishPhone = document.getElementById("swishPhone");
@@ -248,7 +230,6 @@ function validateForm() {
   return true;
 }
 
-// Simulera betalning
 function processPayment() {
   return new Promise((resolve) => {
     showPaymentProgress();
@@ -260,7 +241,6 @@ function processPayment() {
   });
 }
 
-// Visa betalningsprogress
 function showPaymentProgress() {
   const progress = document.getElementById("progressIndicator");
   if (progress) {
@@ -268,7 +248,6 @@ function showPaymentProgress() {
   }
 }
 
-// Dölj betalningsprogress
 function hidePaymentProgress() {
   const progress = document.getElementById("progressIndicator");
   if (progress) {
@@ -276,16 +255,13 @@ function hidePaymentProgress() {
   }
 }
 
-// Slutför order
 function completeOrder() {
   localStorage.removeItem("cart");
   window.location.href = `order-confirmation.html?order=${generateOrderNumber()}`;
 }
 
-// Generera ordernummer
 function generateOrderNumber() {
   return `HKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 }
 
-// Debugging
 console.log("Cart at initialization:", getCartFromStorage());
