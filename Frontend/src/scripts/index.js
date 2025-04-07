@@ -56,12 +56,16 @@ function initializeCart() {
 
   if (checkoutButton) {
     checkoutButton.addEventListener("click", () => {
-      alert("Tack för din beställning!");
-      cart = [];
-      updateCartDisplay();
+      // Ta bort denna rad som rensar varukorgen:
+      // cart = []; 
+    
+      // Vi låter varukorgen vara kvar och sparar den till localStorage
       saveCartToLocalStorage();
-      cartModal.style.display = "none";
+      
+      // Omdirigerar till checkout-sidan
+      window.location.href = 'checkout.html';
     });
+    
   }
 
   updateCartDisplay();
