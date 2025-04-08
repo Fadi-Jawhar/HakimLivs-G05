@@ -7,7 +7,9 @@
   <title>Hakim Livs</title>
   <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/Frontend/src/css/layout.css" />
+  <link rel="stylesheet" href="/Frontend/src/css/shop.css" />
+  <script type="module" src="./src/scripts/index.js" defer></script>
 </head>
 
 <body>
@@ -79,6 +81,29 @@
     <div id="products"></div>
     
   </main>
+  <!-- CART -->
+  <div id="cartModal" class="cart-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Din Varukorg</h3>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div id="cartContent">
+        <div class="empty-cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Din varukorg är tom</p>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="cart-summary">
+          <span>Totalt:</span>
+          <span id="cartTotal">0 kr</span>
+        </div>
+        <button id="checkoutButton" class="checkout-button">Till kassan</button>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="site-footer">
@@ -147,30 +172,5 @@
       </div>
     </div>
   </footer>
-
-  <script type="module" src="./src/scripts/index.js"></script>
-  <div id="cartModal" class="cart-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Din Varukorg</h3>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div id="cartContent">
-        <div class="empty-cart">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <p>Din varukorg är tom</p>
-        </div>
-        <div id="cartItems" class="cart-items"></div>
-      </div>
-      <div class="modal-footer">
-        <div class="cart-summary">
-          <span>Totalt:</span>
-          <span id="cartTotal">0 kr</span>
-        </div>
-        <button id="checkoutButton" class="checkout-button">Till kassan</button>
-      </div>
-    </div>
-  </div>
 </body>
-
 </html>

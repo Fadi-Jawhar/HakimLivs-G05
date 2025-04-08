@@ -5,9 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hakim Livs - Checkout</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/Frontend/src/css/layout.css" />
+  <link rel="stylesheet" href="/Frontend/src/css/shop.css" />
   <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
-  <script type="module" src="checkout.js"></script>
+  <script type="module" src="checkout.js" defer></script>
 </head>
 
 <body>
@@ -109,7 +110,6 @@
           <label>
             <input type="checkbox" name="shipToDifferent" id="shipToDifferent"> Leverera till annan adress
           </label>
-
           <div id="shippingAddressFields" style="display: none; margin-top: 20px;">
             <h4>Leveransadress</h4>
             <div class="form-row">
@@ -296,7 +296,7 @@ function renderCart(cart) {
         <button class="remove-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
       </div>
     `;
-    cartItemsContainer.appendChild(itemElement);
+    cartItemsContainer.append(itemElement);
   });
 
   document.getElementById("cartSubtotal").textContent = `${cartSubtotal.toFixed(2)} kr`;
@@ -347,7 +347,7 @@ function setupEventListeners(cart) {
   removeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
       const index = e.target.getAttribute("data-index");
-      cart.splice(index, 1); // Ta bort produkten från arrayen
+      cart.splice(index, 1); 
       updateCart(cart);
     });
   });

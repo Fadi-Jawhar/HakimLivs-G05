@@ -81,7 +81,7 @@ async function loadProducts() {
       if (!product.id) {
         product.id = "product-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
       }
-      productsContainer.appendChild(createProductCard(product));
+      productsContainer.append(createProductCard(product));
     });
   } catch (error) {
     productsContainer.innerHTML = `<p>Kunde inte ladda produkter: ${error.message}</p>`;
@@ -131,7 +131,7 @@ function showNotification(message, targetElement = null) {
   const notification = document.createElement("div");
   notification.className = "notification";
   notification.textContent = message;
-  document.body.appendChild(notification);
+  document.body.append(notification);
 
   if (targetElement) {
     const rect = targetElement.getBoundingClientRect();
@@ -204,7 +204,7 @@ function renderCartItems() {
       ${isNearLimit ? `<div class="item-progress"><div class="progress-bar" style="width: ${percentage}%"></div></div>` : ""}
     `;
 
-    cartItems.appendChild(itemElement);
+    cartItems.append(itemElement);
   });
 
   document.querySelectorAll(".decrease").forEach((btn) => {
