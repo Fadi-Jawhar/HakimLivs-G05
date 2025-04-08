@@ -18,7 +18,6 @@ async function renderCategories() {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${category.category}</td>
-       
           <td class="text-end">
             <button class="btn btn-sm btn-outline-primary me-2 edit-btn" data-id="${category._id}">
               <i class="fa-solid fa-pen"></i>
@@ -35,11 +34,7 @@ async function renderCategories() {
     }
 
     function resetModal() {
-        document.getElementById("categoryName").value = "";
-        // document.getElementById("categoryDescription").value = "";
-        // document.getElementById("categoryStatus").value = "";
-        // document.getElementById("total").value = "";
-      
+        document.getElementById("categoryName").value = "";  
         const actionButton = document.getElementById("dynamicButton");
         actionButton.textContent = "Skapa";
         actionButton.setAttribute("data-mode", "create");
@@ -53,14 +48,12 @@ async function renderCategories() {
         const id = event.target.getAttribute("data-id");
       
         const category = document.getElementById("categoryName").value;
-        // const description = document.getElementById("categoryDescription").value;
-        // const status = document.getElementById("categoryStatus").value;
-        // const total = parseInt(document.getElementById("total").value);
+    
       
-        // if (!category || !description || !status || isNaN(total)) {
-        //   alert("Alla fält måste fyllas i.");
-        //   return;
-        // }
+        if (!category ) {
+           alert("Alla fält måste fyllas i.");
+          return;
+         }
 
         const newCategory = { category };
 
@@ -83,10 +76,7 @@ async function renderCategories() {
             if (!category) return;
       
             document.getElementById("categoryName").value = category.category;
-            // document.getElementById("categoryDescription").value = category.description;
-            // document.getElementById("categoryStatus").value = category.status;
-            // document.getElementById("total").value = category.total;
-      
+  
             const actionButton = document.getElementById("dynamicButton");
             actionButton.textContent = "Spara ändringar";
             actionButton.setAttribute("data-mode", "edit");
