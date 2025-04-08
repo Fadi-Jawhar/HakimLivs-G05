@@ -95,3 +95,58 @@ export async function loginUser(credentials) {
     throw new Error("Failed to login");
   }
 }
+export async function createCategory(category) {
+  try {
+    const response = await fetch(`${getBaseUrl()}api/category`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(category),
+    });
+
+    if (!response.ok) {
+      throw new Error("Misslyckades att skapa kategori.");
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+    return { error: "Något gick fel. Försök igen senare." };
+  }
+}
+
+export async function updateCategory(id, category) {
+  try {
+    const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(category),
+    });
+
+    if (!response.ok) {
+      throw new Error("Misslyckades att uppdatera kategori.");
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+    return { error: "Något gick fel. Försök igen senare." };
+  }
+}
+
+export async function deleteCategory(id) {
+  try {
+    const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Misslyckades att radera kategori.");
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+    return { error: "Något gick fel. Försök igen senare." };
+  }
+}
+

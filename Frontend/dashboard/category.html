@@ -10,7 +10,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <!-- <script type="module" src="admin.js"></script> -->
+    <script type="module" src="/Frontend/dashboard/category.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script
@@ -129,9 +129,6 @@
                 <thead class="table-light">
                   <tr>
                     <th>Kategori Namn</th>
-                    <th>Beskrivning</th>
-                    <th>Status</th>
-                    <th>Antal produkter</th>
                     <th class="text-end">Åtgärd</th>
                   </tr>
                 </thead>
@@ -174,41 +171,6 @@
                 type="text"
                 class="form-control"
                 id="categoryName"
-                required
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="categoryDescription" class="form-label"
-                >Beskrivning</label
-              >
-              <textarea
-                class="form-control"
-                id="categoryDescription"
-                rows="3"
-                required
-              ></textarea>
-            </div>
-
-            <div class="mb-3">
-              <label for="categoryStatus" class="form-label">Status</label>
-              <select
-              class="form-control form-select"
-              id="categoryStatus"
-              required
-            >
-              <option value="">Välj Status</option>
-              <option value="">Aktiv</option>
-              <option value="">Inaktiv</option>
-            </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="total" class="form-label">Antal Produkter</label>
-              <input
-                type="number"
-                class="form-control"
-                id="total"
                 required
               />
             </div>
