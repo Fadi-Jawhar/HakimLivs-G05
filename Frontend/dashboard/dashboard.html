@@ -10,7 +10,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <script type="module" src="/Frontend/src/scripts/admin.js"></script>
+    <script type="module" src="../src/scripts/admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script
@@ -20,131 +20,136 @@
     ></script>
   </head>
 
-  <body style="background-color: #d6d6d6;" class="text-dark">
-
-      
-      <main class="d-flex flex-nowrap min-vh-100">
-        <!-- sidebar -->
-        <div
-          class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow-lg text-dark"
-          style="width: 280px"
+  <body style="background-color: #d6d6d6" class="text-dark">
+    <main class="d-flex flex-nowrap min-vh-100">
+      <!-- sidebar -->
+      <div
+        class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow-lg text-dark"
+        style="width: 280px"
+      >
+        <a
+          href="../index.html"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
         >
+          <span class="fs-3">Hakim Livs</span>
+        </a>
+        <hr />
+
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item mb-2">
+            <a href="../dashboard/dashboard.html" class="nav-link text-dark">
+              <i class="fa-solid fa-shop fa-sm me-2"></i>
+              Produkter
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a
+              href="../dashboard/orderhistory.html"
+              class="nav-link nav-link text-dark"
+            >
+              <i class="fa-solid fa-list fa-sm me-2"></i>
+              Orderhistorik
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="../dashboard/category.html" class="nav-link text-dark">
+              <i class="fa-solid fa-layer-group fa-sm me-2"></i>
+              Kategorier
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link text-dark">
+              <i class="fa-solid fa-users fa-sm me-2"></i>
+              Kunder
+            </a>
+          </li>
+        </ul>
+
+        <hr />
+        <div class="dropdown">
           <a
-            href="/frontend/index.html"
-            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
           >
-            <span class="fs-3">Hakim Livs</span>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgCVERpCw4kwRI8INQtcfx9XJCMYPb2eNDJQ&s"
+              alt=""
+              width="32"
+              height="32"
+              class="rounded-circle me-2"
+            />
+            <span id="logged-user-name"></span>
           </a>
-          <hr />
-  
-          <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item mb-2">
-              <a href="/Frontend/dashboard/dashboard.html" class="nav-link text-dark">
-                <i class="fa-solid fa-shop fa-sm me-2"></i>
-                Produkter
-              </a>
-            </li>
-            <li class="nav-item mb-2">
-              <a href="/Frontend/dashboard/orderhistory.html" class="nav-link nav-link text-dark">
-                <i class="fa-solid fa-list fa-sm me-2"></i>
-                Orderhistorik
-              </a>
-            </li>
-            <li class="nav-item mb-2">
-              <a href="/Frontend/dashboard/category.html" class="nav-link text-dark">
-                <i class="fa-solid fa-layer-group fa-sm me-2"></i>
-                Kategorier
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="" class="nav-link text-dark">
-                <i class="fa-solid fa-users fa-sm me-2"></i>
-                Kunder
-              </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li>
+              <a class="dropdown-item" href="../auth/login.html" id="logout"
+                >Logga ut</a
+              >
             </li>
           </ul>
-  
-          <hr />
-          <div class="dropdown">
-            <a
-              href="#"
-              class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgCVERpCw4kwRI8INQtcfx9XJCMYPb2eNDJQ&s"
-                alt=""
-                width="32"
-                height="32"
-                class="rounded-circle me-2"
-              />
-              <span id="logged-user-name"></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-              <li><a class="dropdown-item" href="/Frontend/auth/login.html" id="logout">Logga ut</a></li>
-            </ul>
-          </div>
         </div>
-        <!-- Slut sidebar -->
-  
-        <!-- Main content -->
-        <div class="container-fluid py-4 px-5" style="background-color: #ededed;">
-          <div>
-            <h1 class="fw-light text-dark">Hantera produkter</h1>
-          </div>
-  
-          <div class="card shadow-sm my-4 border-0 bg-white">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="col-3">
-                  <select id="adminCategory" class="form-select">
-                    <option value="all">Kategorier</option>
-                    <option value="vegetables">Grönsaker</option>
-                    <option value="fruits">Frukt</option>
-                    <option value="fish">Fisk</option>
-                    <option value="meat">Kyckling & Kött</option>
-                    <option value="drink">Dryck</option>
-                    <option value="mejeri">Mejeri</option>
-                  </select>
-                </div>
-  
-                <div>
-                  <button
-                    id="product-btn"
-                    class="btn btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#productModal"
-                  >
-                    Lägg till en ny produkt
-                  </button>
-                </div>
+      </div>
+      <!-- Slut sidebar -->
+
+      <!-- Main content -->
+      <div class="container-fluid py-4 px-5" style="background-color: #ededed">
+        <div>
+          <h1 class="fw-light text-dark">Hantera produkter</h1>
+        </div>
+
+        <div class="card shadow-sm my-4 border-0 bg-white">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="col-3">
+                <select id="adminCategory" class="form-select">
+                  <option value="all">Kategorier</option>
+                  <option value="vegetables">Grönsaker</option>
+                  <option value="fruits">Frukt</option>
+                  <option value="fish">Fisk</option>
+                  <option value="meat">Kyckling & Kött</option>
+                  <option value="drink">Dryck</option>
+                  <option value="mejeri">Mejeri</option>
+                </select>
+              </div>
+
+              <div>
+                <button
+                  id="product-btn"
+                  class="btn btn-outline-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#productModal"
+                >
+                  Lägg till en ny produkt
+                </button>
               </div>
             </div>
           </div>
-  
-          <div class="card shadow-lg border-0 bg-white">
-            <div class="card-body">
-              <table class="table align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th>Tillgänglig</th>
-                    <th>Produktnamn</th>
-                    <th>Beskrivning</th>
-                    <th>Pris</th>
-                    <th>Lagerstatus</th>
-                    <th>Kategori</th>
-                    <th class="text-end">Åtgärd</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Produkter kommer att renderas här -->
-                </tbody>
-              </table>
-            </div>
+        </div>
+
+        <div class="card shadow-lg border-0 bg-white">
+          <div class="card-body">
+            <table class="table align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Tillgänglig</th>
+                  <th>Produktnamn</th>
+                  <th>Beskrivning</th>
+                  <th>Pris</th>
+                  <th>Lagerstatus</th>
+                  <th>Kategori</th>
+                  <th class="text-end">Åtgärd</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Produkter kommer att renderas här -->
+              </tbody>
+            </table>
           </div>
         </div>
-      </main>
+      </div>
+    </main>
 
     <!-- Bootstrap Modal -->
     <div

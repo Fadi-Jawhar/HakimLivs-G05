@@ -2,7 +2,7 @@ import {
     fetchCategories,
     createCategory, 
     updateCategory, 
-    deleteCategory } from "../src/utils/api.js";
+    deleteCategory } from "../utils/api.js";
 
 const tbody = document.querySelector("tbody");
 const modalEl = document.getElementById("categoryModal");
