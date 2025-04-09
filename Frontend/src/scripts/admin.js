@@ -4,7 +4,7 @@ import {
     updateProduct,
     deleteProduct,
     fetchCategories,
-  } from "../src/utils/api.js"
+  } from "../utils/api.js"
  
   const tbody = document.querySelector("tbody");
   const modalEl = document.getElementById("productModal");
