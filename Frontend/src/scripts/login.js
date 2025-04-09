@@ -13,7 +13,7 @@ function handleLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  // Basic demo login - NOT SECURE
+
   if (username === "admin" && password === "admin") {
     window.location.href = "admin.html";
   } else {
@@ -41,10 +41,9 @@ async function loginUser() {
     console.log("Response data:", data);
     
     if (response.ok) {
-      // Save login status in localStorage
+     
       localStorage.setItem("userLoggedIn", "true");
       
-      // Save user information for use in checkout (optional)
       if (data.user) {
         localStorage.setItem("currentUser", JSON.stringify({
           id: data.user.id,
@@ -54,18 +53,17 @@ async function loginUser() {
       }
       
       document.getElementById("succes").innerText = "Inloggning lyckades!";
-      
-      // Check for saved redirect URL
+     
       const redirectUrl = localStorage.getItem("redirectAfterLogin");
       
       setTimeout(() => {
         if (redirectUrl) {
-          // Clear redirectAfterLogin from localStorage
+   
           localStorage.removeItem("redirectAfterLogin");
-          // Redirect to the saved URL
+  
           window.location.href = redirectUrl;
         } else {
-          // Otherwise, go to the homepage
+       
           window.location.href = "/Frontend/index.html";
         }
       }, 1000);
@@ -78,7 +76,7 @@ async function loginUser() {
   }
 }
 
-// Check if the user is already logged in on page load
+
 document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("userLoggedIn") === "true") {
     const successMessage = document.getElementById("succes");
