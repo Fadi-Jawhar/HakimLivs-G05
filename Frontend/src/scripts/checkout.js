@@ -1,4 +1,5 @@
-
+// Hjälpfunktioner
+const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
 const getCartFromStorage = () => JSON.parse(localStorage.getItem("cart")) || [];
 const updateCartCounter = () => {
   const cart = getCartFromStorage();
@@ -8,17 +9,64 @@ const updateCartCounter = () => {
   }
 };
 
+// Kontrollera om användaren är inloggad
+const isUserLoggedIn = () => {
+  const loggedIn = localStorage.getItem("userLoggedIn") === "true";
+  const userData = localStorage.getItem("currentUser");
+  return loggedIn && userData;
+};
+
+// Huvudfunktionalitet
 document.addEventListener("DOMContentLoaded", () => {
+  // Kontrollera inloggning direkt vid laddning
+  if (!isUserLoggedIn()) {
+    localStorage.setItem("redirectAfterLogin", window.location.href);
+    window.location.href = "/Frontend/login.html";
+    return;
+  }
+
   initializeCheckout();
 });
 
 function initializeCheckout() {
+  renderUserData();
   renderCartItems();
   setupEventListeners();
   updateCartCounter();
 }
 
+// Visa användarinformation
+function renderUserData() {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const userInfoElement = document.getElementById("userInfo");
+  
+  if (userInfoElement && user) {
+    userInfoElement.innerHTML = `
+      <div class="user-info">
+        <h3>Inloggad som: ${user.username}</h3>
+        <p>${user.email || ''}</p>
+        <button id="logoutBtn" class="button small">Logga ut</button>
+      </div>
+    `;
+    
+    document.getElementById("logoutBtn")?.addEventListener("click", logoutUser);
+  }
+}
 
+// Logga ut funktion
+function logoutUser() {
+  localStorage.removeItem("userLoggedIn");
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("token");
+  
+  showNotification("Du är nu utloggad", "success");
+  
+  setTimeout(() => {
+    window.location.href = "/Frontend/index.html";
+  }, 1500);
+}
+
+// Renderar varukorgen
 function renderCartItems() {
   const cartContainer = document.getElementById("cartItemsContainer");
   const cart = getCartFromStorage();
@@ -73,10 +121,12 @@ function renderCartItems() {
   toggleCheckoutButton(true);
 }
 
+// Beräkna totalsumma
 function calculateTotal(cart) {
   return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
+// Uppdatera totalsummor
 function updateTotals(total) {
   const subtotalElement = document.getElementById("cartSubtotal");
   const totalElement = document.getElementById("cartTotal");
@@ -85,24 +135,23 @@ function updateTotals(total) {
   if (totalElement) totalElement.textContent = `${total.toFixed(2)} kr`;
 }
 
+// Event listeners
 function setupEventListeners() {
-
   document.addEventListener("click", handleCartActions);
   document.addEventListener("input", handleQuantityInput);
   
-
   const shipToDifferentCheckbox = document.getElementById("shipToDifferent");
   if (shipToDifferentCheckbox) {
     shipToDifferentCheckbox.addEventListener("change", toggleShippingAddress);
   }
   
-
   const orderButton = document.getElementById("placeOrderBtn");
   if (orderButton) {
     orderButton.addEventListener("click", handlePayment);
   }
 }
 
+// Toggle shipping address fields
 function toggleShippingAddress(e) {
   const shippingFields = document.getElementById("shippingAddressFields");
   if (shippingFields) {
@@ -110,6 +159,7 @@ function toggleShippingAddress(e) {
   }
 }
 
+// Hantera varukorgsåtgärder
 function handleCartActions(e) {
   const cartItem = e.target.closest(".cart-item");
   if (!cartItem) return;
@@ -126,6 +176,7 @@ function handleCartActions(e) {
   }
 }
 
+// Hantera kvantitetsinput
 function handleQuantityInput(e) {
   if (!e.target.classList.contains("quantity-input")) return;
   
@@ -136,6 +187,7 @@ function handleQuantityInput(e) {
   updateQuantityAbsolute(itemId, newQuantity);
 }
 
+// Uppdatera kvantitet
 function updateQuantity(itemId, change, cart) {
   const index = cart.findIndex(item => item.id === itemId);
   if (index === -1) return;
@@ -153,6 +205,7 @@ function updateQuantity(itemId, change, cart) {
   showNotification(`Varukorg uppdaterad`);
 }
 
+// Uppdatera absolut kvantitet
 function updateQuantityAbsolute(itemId, quantity) {
   const cart = getCartFromStorage();
   const index = cart.findIndex(item => item.id === itemId);
@@ -167,6 +220,7 @@ function updateQuantityAbsolute(itemId, quantity) {
   showNotification(`Varukorg uppdaterad`);
 }
 
+// Ta bort produkt
 function removeItem(itemId, cart) {
   const newCart = cart.filter(item => item.id !== itemId);
   saveCart(newCart);
@@ -174,6 +228,7 @@ function removeItem(itemId, cart) {
   showNotification(`Produkt borttagen`);
 }
 
+// Visa notifikationer
 function showNotification(message, type = "success") {
   const notification = document.createElement("div");
   notification.className = `notification ${type}`;
@@ -186,11 +241,13 @@ function showNotification(message, type = "success") {
   setTimeout(() => notification.remove(), 3000);
 }
 
+// Sparar varukorg
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCounter();
 }
 
+// Toggle checkout-knapp
 function toggleCheckoutButton(enable) {
   const btn = document.getElementById("placeOrderBtn");
   if (btn) {
@@ -199,69 +256,123 @@ function toggleCheckoutButton(enable) {
   }
 }
 
+// Hantera betalning
 async function handlePayment(e) {
   e.preventDefault();
-  
-  if (!validateForm()) return;
-  
-  const paymentSuccess = await processPayment();
-  
-  if (paymentSuccess) {
-    completeOrder();
-  } else {
-    showNotification("Betalningen misslyckades", "error");
-  }
-}
 
-function validateForm() {
-  const form = document.getElementById("checkoutForm");
-  const swishPhone = document.getElementById("swishPhone");
-  
-  if (!form || !form.checkValidity()) {
-    if (form) form.reportValidity();
-    return false;
-  }
-  
-  if (!swishPhone || !swishPhone.checkValidity()) {
-    if (swishPhone) swishPhone.reportValidity();
-    return false;
-  }
-  
-  return true;
-}
-
-function processPayment() {
-  return new Promise((resolve) => {
-    showPaymentProgress();
-    
+  // VIKTIGT: Kontrollera om användaren är inloggad
+  if (!isUserLoggedIn()) {
+    showNotification("Du måste vara inloggad för att slutföra köpet", "error");
     setTimeout(() => {
-      resolve(Math.random() > 0.2); // 80% success rate
-      hidePaymentProgress();
-    }, 2000);
-  });
-}
-
-function showPaymentProgress() {
-  const progress = document.getElementById("progressIndicator");
-  if (progress) {
-    progress.classList.remove("hidden");
+      localStorage.setItem("redirectAfterLogin", window.location.href);
+      window.location.href = "/Frontend/login.html";
+    }, 1500);
+    return;
   }
-}
 
-function hidePaymentProgress() {
-  const progress = document.getElementById("progressIndicator");
-  if (progress) {
-    progress.classList.add("hidden");
+  // VIKTIGT: Validera alla input-fält innan vi fortsätter
+  if (!validateAllInputs()) {
+    return; // Avbryt om validering misslyckas
   }
+
+  // Visa betalningsprocessen
+  const progressIndicator = document.getElementById("progressIndicator");
+  if (progressIndicator) {
+    progressIndicator.classList.remove("hidden");
+  }
+
+  // Simulerad betalningssekvens
+  const progressStatus = document.getElementById("progressStatus");
+  let step = 0;
+  const steps = [
+    "Initierar betalning...",
+    "Kontrollerar Swish-uppgifter...",
+    "Väntar på godkännande i appen...",
+    "Betalning godkänd!"
+  ];
+
+  // Uppdatera status direkt
+  if (progressStatus) {
+    progressStatus.textContent = steps[step];
+  }
+  
+  // Simulera betalningsprocessen med intervall
+  const paymentInterval = setInterval(() => {
+    step++;
+    
+    // Uppdatera statustext
+    if (step < steps.length && progressStatus) {
+      progressStatus.textContent = steps[step];
+    } else {
+      // Avsluta när alla steg är klara
+      clearInterval(paymentInterval);
+      
+      // Kort fördröjning innan omdirigering
+      setTimeout(() => {
+        // Töm varukorgen
+        localStorage.removeItem("cart");
+        
+        // Generera ett ordernummer och omdirigera
+        const orderNumber = generateOrderNumber();
+        window.location.href = `order-confirmation.html?order=${orderNumber}`;
+      }, 1000);
+    }
+  }, 1500); // 1.5 sekunder per steg
 }
 
-function completeOrder() {
-  localStorage.removeItem("cart");
-  window.location.href = `order-confirmation.html?order=${generateOrderNumber()}`;
-}
-
+// Generera ordernummer
 function generateOrderNumber() {
   return `HKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 }
 
-console.log("Cart at initialization:", getCartFromStorage());
+// VIKTIGT: Validera alla input-fält
+function validateAllInputs() {
+  // Hämta alla obligatoriska fält
+  const requiredFields = [
+    "firstName", "lastName", "address", "city", "zipCode", "email", "phone", "swishPhone"
+  ];
+  
+  // Kontrollera varje fält
+  for (const fieldId of requiredFields) {
+    const field = document.getElementById(fieldId);
+    
+    if (!field || !field.value.trim()) {
+      showNotification(`Fältet "${fieldId}" måste fyllas i`, "error");
+      if (field) field.focus();
+      return false;
+    }
+  }
+  
+  // Om leverans till annan adress är vald, kontrollera även dessa fält
+  const shipToDifferent = document.getElementById("shipToDifferent");
+  if (shipToDifferent && shipToDifferent.checked) {
+    const shippingFields = [
+      "shippingFirstName", "shippingLastName", "shippingAddress", "shippingCity", "shippingZipCode"
+    ];
+    
+    for (const fieldId of shippingFields) {
+      const field = document.getElementById(fieldId);
+      
+      if (!field || !field.value.trim()) {
+        showNotification(`Fältet "${fieldId}" måste fyllas i`, "error");
+        if (field) field.focus();
+        return false;
+      }
+    }
+  }
+  
+  // Validera Swish-nummer
+  const swishPhone = document.getElementById("swishPhone");
+  if (swishPhone) {
+    const swishPhoneValue = swishPhone.value.trim();
+    const swishPhoneRegex = /^(07[0236]\d{7}|07[0236]-\d{7}|\+46\s?7[0236]\d{7}|\+46\s?7[0236]-\d{7})$/;
+    
+    if (!swishPhoneRegex.test(swishPhoneValue)) {
+      showNotification("Ange ett giltigt svenskt mobilnummer för Swish (t.ex. 0701234567)", "error");
+      swishPhone.focus();
+      return false;
+    }
+  }
+  
+  return true; // Alla fält är validerade och korrekta
+}

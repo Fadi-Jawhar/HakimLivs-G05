@@ -558,3 +558,67 @@
   .logo img {
     display: block; 
   }
+  #progressIndicator.hidden {
+    display: none;
+  }
+  /* Order Confirmation Styles */
+  #confirmationContainer {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  #confirmationContainer h1 {
+    color: #4CAF50;
+    margin-bottom: 24px;
+    font-size: 28px;
+  }
+  
+  #confirmationContainer p {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  #orderNumber {
+    font-weight: bold;
+    color: #2E7D32;
+    font-size: 20px;
+  }
+  
+  #confirmationContainer a {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  #confirmationContainer a:hover {
+    background-color: #2E7D32;
+  }
+  
+  @media screen and (max-width: 768px) {
+    #confirmationContainer {
+      margin: 30px 15px;
+      padding: 20px;
+    }
+    
+    #confirmationContainer h1 {
+      font-size: 24px;
+    }
+    
+    #confirmationContainer p {
+      font-size: 16px;
+    }
+  }
+  

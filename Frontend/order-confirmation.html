@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Orderbekräftelse</title>
+  <link rel="stylesheet" href="src/css/layout.css'">
+  <link rel="stylesheet" href="src/css/shop.css">
+  <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="top-nav">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                  <img src="img/Screenshot 2025-03-28 at 13.39.48.png" alt="Hakim Livs Logo">
+                </a>
+              </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Sök">
+                <button type="button" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="auth-menu">
+                <a href="./login.html" class="login-btn"><i class="fa-regular fa-user"></i> Logga in</a>
+                <a href="#" id="cartButton" class="cart">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  <span class="cart-text">Varukorg</span>
+                  <span id="cartCounter" class="cart-counter">0</span>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    <nav class="main-nav">
+        <div class="container-2">
+            <div class="nav-left">
+                <select id="filterCategory" class="form-select">
+                    <option value="all">Kategorier</option>
+                    <option value="vegetables">Grönsaker</option>
+                    <option value="fruits">Frukt</option>
+                    <option value="fish">Fisk</option>
+                    <option value="meat">Kyckling & Kött</option>
+                    <option value="drink">Dryck</option>
+                    <option value="mejeri">Mejeri</option>
+                </select>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+
+            <div class="nav-right">
+            <ul class="nav-menu">
+                <li><a href="products.html">Produkter</a></li>
+                <li><a href="#">Om Oss</a></li>
+                <li><a href="#">Kontakta Oss</a></li>
+            </ul>
+        </div>
+        </div>
+    </nav>  
+  </header>
+  <div id="confirmationContainer">
+    <h1>Tack för din beställning!</h1>
+    <p>Din ordernummer är: <span id="orderNumber"></span></p>
+    <p>Du kommer att få en bekräftelse via e-post inom kort.</p>
+    <a href="/Frontend/index.html">Tillbaka till startsidan</a>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-slogan">
+        <img src="./src/icons/Pris.png" alt="pris">
+        <img src="./src/icons/ÅterBetalning.png" alt="pris">
+        <img src="./src/icons/FriLeverans.png" alt="pris">
+      </div>
+      <div class="footer-left">
+        <div class="footer-section">
+          <div class="img-logo">
+            <img src="./src/icons/Logga.png" alt="matkasse">
+          </div>
+          <div class="contact-info">
+            <p><i class="fas fa-map-marker-alt"></i> Address: Livsvägen 83</p>
+            <p><i class="fas fa-phone"></i> Kontakta oss: 08-702 00 90</p>
+            <p><i class="fas fa-envelope"></i> Email: hakimlivs@contact.com</p>
+            <p><i class="fas fa-clock"></i> Öppettider: Varje dag, 8:00 - 20:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-section">
+          <h4>Konto</h4>
+          <ul>
+            <li><a href="#">Önskelista</a></li>
+            <li><a href="#">Varukorg</a></li>
+            <li><a href="#">Spåra Leverans</a></li>
+            <li><a href="#">Leveransinformation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Hitta enkelt</h4>
+          <ul>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Kontakt</a></li>
+            <li><a href="#">Kampanjer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Help Center</h4>
+          <ul>
+            <li><a href="#">Betalning</a></li>
+            <li><a href="#">Återbetalning</a></li>
+            <li><a href="#">Kassa</a></li>
+            <li><a href="#">Leverans</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025, All rights reserved</p>
+      <div class="payment-icon">
+        <img src="./src/icons/visa-mastercard.png" alt="Visa" />
+      </div>
+      <div class="social-icons">
+        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i>
+          <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderNumber = urlParams.get('order');
+    if (orderNumber) {
+      document.getElementById('orderNumber').textContent = orderNumber;
+    }
+  </script>
+</body>
+</html>
