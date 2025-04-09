@@ -87,7 +87,7 @@
     color: #333;
   }
   /* Varukorgsinnehåll */
-  #cartContent {
+  /* #cartContent {
     padding: 20px;
     min-height: 200px;
   }
@@ -153,9 +153,9 @@
     font-weight: bold;
     min-width: 70px;
     text-align: right;
-  }
+  } */
   /* Modal footer */
-  .modal-footer {
+  /* .modal-footer {
     padding: 15px 20px;
     border-top: 1px solid #eee;
   }
@@ -273,9 +273,9 @@
   .progress-bar {
     height: 100%;
     
-  }
+  } */
   /* Checkout */
-  .checkout-container {
+  /* .checkout-container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
@@ -294,10 +294,10 @@
     .payment-methods {
       grid-column: span 2;
     }
-  }
+  } */
   
   /* Cart items display */
-  .cart-items-section {
+  /* .cart-items-section {
     background-color: #f9f9f9;
     border-radius: 8px;
     padding: 1.5rem;
@@ -394,9 +394,9 @@
     font-size: 3rem;
     color: #ccc;
     margin-bottom: 1rem;
-  }
+  } */
   /* Form styles */
-  .billing-form {
+  /* .billing-form {
     background-color: #fff;
     border-radius: 8px;
     padding: 1.5rem;
@@ -425,9 +425,9 @@
   textarea {
     resize: vertical;
     min-height: 100px;
-  }
+  } */
   /* Payment method styles */
-  .payment-methods {
+  /* .payment-methods {
     background-color: #fff;
     border-radius: 8px;
     padding: 1.5rem;
@@ -498,10 +498,10 @@
     display: block;
     color: #666;
     margin-top: 0.25rem;
-  }
+  } */
   
   /* Checkout button */
-  .checkout-button {
+  /* .checkout-button {
     width: 100%;
     padding: 1rem;
     background-color: #4caf50;
@@ -560,9 +560,9 @@
   }
   #progressIndicator.hidden {
     display: none;
-  }
+  } */
   /* Order Confirmation Styles */
-  #confirmationContainer {
+  /* #confirmationContainer {
     max-width: 800px;
     margin: 50px auto;
     padding: 30px;
@@ -622,3 +622,190 @@
     }
   }
   
+
+
+
+@media (min-width: 1025px) {
+.h-custom {
+height: 100vh !important;
+}
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+font-size: 1rem;
+line-height: 2.15;
+padding-left: .75em;
+padding-right: .75em;
+}
+
+.card-registration .select-arrow {
+top: 13px;
+} */
+
+#cartModal {
+  display: none;
+  background-color: white; /* Vit bakgrund */
+  position: fixed; /* Fixera den på skärmen */
+  top: 50%; /* Centrera modalen vertikalt */
+  left: 50%; /* Centrera modalen horisontellt */
+  transform: translate(-50%, -50%); /* Justera så att modalen är exakt i mitten */
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000; /* Placera den över andra element */
+  max-width: 400px;
+  width: 80%;
+  max-height: 80vh;
+  overflow-y: auto; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* För en mjuk skugga */
+}
+
+/* Styla headern i modalen */
+.modal-header h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Styla footern i modalen */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+}
+
+/* Cart Summary i footern */
+.cart-summary {
+  font-weight: bold;
+}
+
+/* För varukorgsinnehåll */
+.cart-items {
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+/* För tom varukorg */
+.empty-cart {
+  text-align: center;
+}
+
+.empty-cart i {
+  margin-top: 20px;
+  font-size: 3em;
+  color: #ccc;
+}
+
+.empty-cart p {
+  font-size: 1.2em;
+  color: #535353;
+}
+
+/* För varukorgens sammanfattning */
+.cart-summary {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  font-size: 1.2em;
+}
+
+/* För kassan-knappen */
+.checkout-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px ;
+  font-size: 1.2em;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.checkout-button:hover {
+  background-color: #218838;
+}
+
+/* Stil för varukorgsprodukten */
+.cart-item {
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 10px;
+
+
+}
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+.product-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 20px; /* Lite avstånd mellan produktnamnet och kvantitet */
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-container button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #00b318;;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantity-container button:hover {
+  background-color: #b3ebbb;
+}
+
+.quantity-container input {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Totalen för produkten, placerad på en ny rad */
+.product-total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+}
+
+.product-total {
+  font-size: 16px;
+  font-weight: bold;
+
+}
+.remove-item-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #413c3c; /* Röd färg för soptunnan */
+  font-size: 1rem;
+  margin-left: 10px;
+}
+
+.remove-item-btn i {
+  pointer-events: none; /* Förhindrar att man klickar på ikonen av misstag */
+}

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hakim Livs</title>
   <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./src/css/layout.css" />
   <link rel="stylesheet" href="./src/css/shop.css" />
@@ -78,16 +79,18 @@
   <main class="main-content">
 
     <h1>Welcome to Hakim Livs</h1>
-    <div id="products"></div>
+    <div id="products">
+
+    </div>
     
   </main>
   <!-- CART -->
-  <div id="cartModal" class="cart-modal">
-    <div class="modal-content">
+   <div id="cartModal" class="cart-modal">
       <div class="modal-header">
         <h3>Din Varukorg</h3>
         <span class="close-modal">&times;</span>
       </div>
+
       <div id="cartContent">
         <div class="empty-cart">
           <i class="fa-solid fa-cart-shopping"></i>
@@ -98,12 +101,11 @@
       <div class="modal-footer">
         <div class="cart-summary">
           <span>Totalt:</span>
-          <span id="cartTotal">0 kr</span>
+          <span id="cartTotal"> 0 kr</span>
         </div>
-        <button id="checkoutButton" class="checkout-button">Till kassan</button>
       </div>
+      <button id="checkoutButton" class="checkout-button">Till kassan</button>
     </div>
-  </div>
 
   <!-- FOOTER -->
   <footer class="site-footer">
