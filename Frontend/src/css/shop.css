@@ -185,7 +185,7 @@
 .product-name {
   font-size: 16px;
   font-weight: bold;
-  margin-right: 20px; /* Lite avstånd mellan produktnamnet och kvantitet */
+  margin-right: 20px; 
 }
 
 .quantity-container {
