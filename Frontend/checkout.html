@@ -248,7 +248,25 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", function() {
- 
+    const isLoggedIn = localStorage.getItem("token"); // eller använd sessionslagring om du föredrar
+    const checkoutButton = document.getElementById("placeOrderBtn");
+
+
+  if (!isLoggedIn) {
+    checkoutButton.textContent = "Logga in för att fortsätta";
+    checkoutButton.addEventListener("click", () => {
+      // Spara nuvarande sida som redirect-target
+      localStorage.setItem("redirectAfterLogin", "checkout.html");
+      window.location.href = "./auth/login.html";
+    });
+  } else {
+    checkoutButton.textContent = "Betala med Swish";
+    checkoutButton.addEventListener("click", () => {
+      // Din betalningslogik här
+      alert("Betalning med Swish initierad!");
+    });
+  }
+});
   function getCart() {
     try {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -464,7 +482,7 @@
 
 
   renderCart();
-});
+
   </script>
 </body>
 </html> 
