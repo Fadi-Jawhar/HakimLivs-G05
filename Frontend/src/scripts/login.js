@@ -1,23 +1,39 @@
-document.addEventListener("DOMContentLoaded", initLogin);
+const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
 
-function initLogin() {
-  const loginForm = document.getElementById("loginForm");
+document.getElementById("btn-login").addEventListener("click", loginUser);
 
-  loginForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    handleLogin();
+async function loginUser() {
+  const username = document.getElementById("login-username").value;
+  const password = document.getElementById("login-password").value;
+
+  const response = await fetch(baseUrl + "api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
   });
-}
 
-function handleLogin() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const data = await response.json();
+  console.log("Response status:", response.status);
+  console.log("Response OK?:", response.ok);
+  console.log("Response data:", data);
 
-  // Basic demo login - NOT SECURE
-  if (username === "admin" && password === "admin") {
-    window.location.href = "admin.html";
+  if (response.ok) {
+    
+    if (data && data.accessToken) {
+    
+      localStorage.setItem('token', data.accessToken);
+
+      document.getElementById("succes").innerText = "Inloggning lyckades!";
+
+      
+      setTimeout(() => {
+        window.location.href = "../dashboard/dashboard.html"; 
+      }, 1000);
+    } else {
+      document.getElementById("error").innerText = "Ogiltigt användardata i svaret.";
+    }
   } else {
-    alert("Invalid credentials: LOGGING IN ANYWAY");
-    window.location.href = "admin.html";
+    document.getElementById("error").innerText =
+      data.message || "Fel användarnamn eller lösenord";
   }
 }

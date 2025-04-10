@@ -78,11 +78,11 @@
                   </button>
                 </div>
 
-                <p class="small">
+                <!-- <p class="small">
                   <a class="text-muted" href="../auth/login.html"
                     >Är du administratör?</a
                   >
-                </p>
+                </p> -->
                 <p>
                   Inget konto?
                   <a href="../auth/register.html" class="text-muted"
@@ -105,35 +105,6 @@
       </div>
     </section>
 
-    <script>
-      const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
-      document.getElementById("btn-login").addEventListener("click", loginUser);
-
-      async function loginUser() {
-        const username = document.getElementById("login-username").value;
-        const password = document.getElementById("login-password").value;
-
-        const response = await fetch(baseUrl + "api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-
-        const data = await response.json();
-        console.log("Response status:", response.status);
-        console.log("Response OK?:", response.ok);
-        console.log("Response data:", data);
-
-        if (response.ok) {
-          document.getElementById("succes").innerText = "Inloggning lyckades!";
-          setTimeout(() => {
-            window.location.href = "./index.html";
-          }, 1000);
-        } else {
-          document.getElementById("error").innerText =
-            data.message || "Fel användarnamn eller lösenord";
-        }
-      }
-    </script>
+    <script src="../src/scripts/login.js"></script>
   </body>
 </html>
