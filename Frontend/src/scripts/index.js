@@ -64,6 +64,7 @@ function createProductCard(product) {
   card.innerHTML = `
     <h3>${product.name || "Namnlös produkt"}</h3>
     <p>${product.price?.toFixed(2) || "0.00"} kr</p>
+    
     <button class="add-to-cart-btn">Lägg i varukorgen</button>
   `;
   return card;
