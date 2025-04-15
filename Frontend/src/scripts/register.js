@@ -1,4 +1,31 @@
+import { loginUser } from "../utils/api.js";
 const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
+
+// Hämtar adminDiv direkt
+const adminDiv = document.querySelector(".form-check");
+
+// Visa admin-rutan endast om användaren är inloggad som admin
+window.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    adminDiv.style.display = "none";
+    return;
+  }
+
+  try {
+    const decoded = jwt_decode(token);
+    const isUserAdmin = decoded.isAdmin === true;
+
+    if (!isUserAdmin) {
+      adminDiv.style.display = "none";
+    } else {
+      adminDiv.style.display = "block";
+    }
+  } catch (err) {
+    console.error("Kunde inte avkoda token:", err);
+    adminDiv.style.display = "none";
+  }
+});
 
 document.getElementById("btn-register").addEventListener("click", registerUser);
 
@@ -8,7 +35,7 @@ async function registerUser() {
   const phone = document.getElementById("register-phone").value;
   const password = document.getElementById("register-password").value;
   const confirm = document.getElementById("confirmPassword").value;
-  const isAdmin = document.getElementById("isAdmin").checked;
+  const isAdminBox = document.getElementById("isAdmin").checked;
 
   const errorMessage = document.getElementById("error");
   const successMessage = document.getElementById("succes");
@@ -16,8 +43,7 @@ async function registerUser() {
   errorMessage.innerText = "";
   successMessage.innerText = "";
 
-  // ________________________________________Validering _____________________________________________
-
+  // ___________________________ Validering _______________________________
   if (password !== confirm) {
     errorMessage.innerText = "Lösenorden matchar inte. Försök igen.";
     return;
@@ -43,18 +69,13 @@ async function registerUser() {
     return;
   }
 
-  if (password !== confirm) {
-    errorMessage.innerText = "Lösenordet måste vara mellan 6 och 30 tecken.";
-    return;
-  }
-  // _____________________________________________________________________________________
-
+  // _______________ Skapa användarobjekt ____________________
   const userData = {
     username,
     email,
     phone,
     password,
-    isAdmin,
+    isAdmin: isAdminBox,
   };
 
   console.log("User data being sent to server:", userData);
@@ -69,8 +90,9 @@ async function registerUser() {
 
   if (response.ok) {
     successMessage.innerText = "Registrering lyckades!";
+    await loginUser({ username, password });
     setTimeout(() => {
-      window.location.href = "../dashboard/dashboard.html";
+      window.location.href = "../index.html";
     }, 1000);
   } else {
     console.log("Error response from server:", data);
@@ -79,7 +101,7 @@ async function registerUser() {
   }
 }
 
-// Live-feedback när fälten når maxlängd
+// __________________________ Live feedback för längdbegränsning __________________________
 
 document.getElementById("register-username").addEventListener("input", () => {
   const value = document.getElementById("register-username").value;
