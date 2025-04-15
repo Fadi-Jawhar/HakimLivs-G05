@@ -24,7 +24,7 @@ async function registerUser() {
   }
 
   if (username.length > 30) {
-    errorMessage.innerText = "Användarnamnet får max innehålla 20 tecken.";
+    errorMessage.innerText = "Användarnamnet får max innehålla 30 tecken.";
     return;
   }
 
@@ -44,7 +44,7 @@ async function registerUser() {
   }
 
   if (password !== confirm) {
-    errorMessage.innerText = "Lösenorden matchar inte. Försök igen.";
+    errorMessage.innerText = "Lösenordet måste vara mellan 6 och 30 tecken.";
     return;
   }
   // _____________________________________________________________________________________

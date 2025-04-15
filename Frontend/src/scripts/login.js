@@ -6,6 +6,21 @@ async function loginUser() {
   const username = document.getElementById("login-username").value;
   const password = document.getElementById("login-password").value;
 
+// ____________________VALIDERING_____________________________________________
+
+if (username.length >= 30 ) {
+  errorMessage.innerText = "Användarnamnet får max innehålla 30 tecken.";
+    return;
+}
+
+if (password.length >= 30 ) {
+  errorMessage.innerText = "Lösenordet får max innehålla 30 tecken.";
+    return;
+}
+
+// ___________________________________________________________________________
+  
+
   const response = await fetch(baseUrl + "api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -18,7 +33,6 @@ async function loginUser() {
   console.log("Response data:", data);
 
   if (response.ok) {
-    
     if (data && data.accessToken) {
     
       localStorage.setItem('token', data.accessToken);
@@ -37,3 +51,23 @@ async function loginUser() {
       data.message || "Fel användarnamn eller lösenord";
   }
 }
+
+document.getElementById("login-username").addEventListener("input", () => {
+  const value = document.getElementById("login-username").value;
+  const error = document.getElementById("error");
+  if (value.length >= 30) {
+    error.innerText = "Max 30 tecken för användarnamn.";
+  } else {
+    error.innerText = "";
+  }
+});
+
+document.getElementById("login-password").addEventListener("input", () => {
+  const value = document.getElementById("login-password").value;
+  const error = document.getElementById("error");
+  if (value.length >= 30) {
+    error.innerText = "Max 30 tecken för lösenord.";
+  } else {
+    error.innerText = "";
+  }
+});
