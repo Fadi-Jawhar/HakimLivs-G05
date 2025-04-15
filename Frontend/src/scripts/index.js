@@ -1,14 +1,30 @@
 import { fetchProducts } from "../utils/api.js";
 
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadCartFromLocalStorage(); 
-  loadProducts();  
-  updateCartModal();  
-  updateCartIcon();  
+  loadCartFromLocalStorage();
+  loadProducts();
+  updateCartModal();
+  updateCartIcon();
+  const loginButton = document.querySelector(".login-btn");
+  const token = localStorage.getItem('token')
+
+  if (token) {
+    loginButton.textContent = 'Logga ut';
+    loginButton.href = '#';
+    loginButton.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      window.location.reload();
+    });
+
+  } else {
+    loginButton.textContent = 'Logga in';
+    loginButton.href = './auth/login.html';
+  }
 });
 
 // Varukorgsdata
-let cart = []; 
+let cart = [];
 
 // Spara varukorgen till localStorage
 function saveCartToLocalStorage() {
@@ -44,12 +60,12 @@ async function loadProducts() {
       if (!product.id) {
         product.id = "product-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
       }
-      const productCard = createProductCard(product); 
+      const productCard = createProductCard(product);
       productsContainer.append(productCard);
       const addToCartBtn = productCard.querySelector(".add-to-cart-btn");
       addToCartBtn.addEventListener("click", () => {
-        addToCart(product); 
-        showCartModal(); 
+        addToCart(product);
+        showCartModal();
       });
     });
   } catch (error) {
@@ -74,7 +90,7 @@ function createProductCard(product) {
 // Lägg till produkt i varukorgen och uppdatera modalen
 function addToCart(product, event) {
   const existingItem = cart.find(item => item.id === product.id);
-    
+
   if (existingItem) {
     if (existingItem.quantity >= 1000) {
       showNotification(`Max 1000 st av ${product.name}!`, event?.currentTarget);
@@ -90,8 +106,8 @@ function addToCart(product, event) {
     });
   }
 
-  saveCartToLocalStorage();  
-  updateCartModal();  
+  saveCartToLocalStorage();
+  updateCartModal();
   updateCartIcon();
 }
 
@@ -116,13 +132,13 @@ function showNotification(message, element) {
 
 // Uppdatera modalen med varukorgens innehåll och total
 function updateCartModal() {
-  console.log("Uppdaterar varukorgsmodalen med innehåll:", cart); 
+  console.log("Uppdaterar varukorgsmodalen med innehåll:", cart);
   const cartItemsContainer = document.getElementById("cartItems");
   const cartTotal = document.getElementById("cartTotal");
   let emptyCartMessage = document.querySelector(".empty-cart");
 
   cartItemsContainer.innerHTML = "";
-   if (cart.length === 0) {
+  if (cart.length === 0) {
     if (!emptyCartMessage) {
       emptyCartMessage = document.createElement("div");
       emptyCartMessage.classList.add("empty-cart");
@@ -130,7 +146,7 @@ function updateCartModal() {
         <i class="fa-solid fa-cart-shopping"></i>
         <p>Din varukorg är tom</p>
       `;
-      cartItemsContainer.append(emptyCartMessage); 
+      cartItemsContainer.append(emptyCartMessage);
     }
     cartTotal.textContent = "0 kr";
   } else {
@@ -159,7 +175,7 @@ function updateCartModal() {
           </button>
         </div>
       `;
-            
+
       // Visa varningsmeddelande om kvantiteten är över max
       const warningElement = cartItemElement.querySelector(".max-quantity-warning");
       if (item.quantity >= 1000) {
@@ -175,27 +191,28 @@ function updateCartModal() {
       });
     });
 
-    cartTotal.textContent = total.toFixed(2) + " kr";  
+    cartTotal.textContent = total.toFixed(2) + " kr";
   }
 }
 
 // Ta bort produkt från varukorgen
 function removeFromCart(id) {
   cart = cart.filter(item => item.id !== id);
-  saveCartToLocalStorage();  
-  updateCartModal();  
+  saveCartToLocalStorage();
+  updateCartModal();
   updateCartIcon();
   if (cart.length === 0) {
     const emptyCartMessage = document.querySelector(".empty-cart");
     if (emptyCartMessage) {
       emptyCartMessage.style.display = "block";
+    }
+  }
 }
-  }}
 const cartButton = document.getElementById("cartButton");
 if (cartButton) {
   cartButton.addEventListener("click", () => {
-    showCartModal();  
-    updateCartModal(); 
+    showCartModal();
+    updateCartModal();
   });
 }
 
@@ -268,6 +285,5 @@ function changeQuantity(id, newQuantity) {
 document.getElementById("checkoutButton").addEventListener("click", () => {
   window.location.href = "checkout.html";  // Skicka användaren till checkout-sidan
 });
-
 
 
