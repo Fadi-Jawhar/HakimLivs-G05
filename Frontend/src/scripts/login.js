@@ -2,7 +2,7 @@ const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
 
 document.getElementById("btn-login").addEventListener("click", loginUser);
 
-async function loginUser() {
+async function loginUser() { 
   const username = document.getElementById("login-username").value;
   const password = document.getElementById("login-password").value;
 
@@ -34,14 +34,11 @@ if (password.length >= 30 ) {
 
   if (response.ok) {
     if (data && data.accessToken) {
-    
       localStorage.setItem('token', data.accessToken);
-
       document.getElementById("succes").innerText = "Inloggning lyckades!";
 
-      
       setTimeout(() => {
-        window.location.href = "../dashboard/dashboard.html"; 
+        window.location.href = "../index.html"; 
       }, 1000);
     } else {
       document.getElementById("error").innerText = "Ogiltigt användardata i svaret.";
@@ -71,3 +68,5 @@ document.getElementById("login-password").addEventListener("input", () => {
     error.innerText = "";
   }
 });
+
+

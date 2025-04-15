@@ -88,13 +88,19 @@ export async function loginUser(credentials) {
     },
     body: JSON.stringify(credentials),
   });
-  
+
+  const data = await response.json();
+  console.log(data)
   if (response.ok) {
-    return await response.json();
+    if (data && data.accessToken) {
+      localStorage.setItem("token", data.accessToken);
+    }
+    return data;
   } else {
-    throw new Error("Failed to login");
+    throw new Error(data.message || "Failed to login");
   }
 }
+
 export async function createCategory(category) {
   try {
     const response = await fetch(`${getBaseUrl()}api/category`, {
