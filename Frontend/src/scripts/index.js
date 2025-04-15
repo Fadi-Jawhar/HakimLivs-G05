@@ -62,6 +62,7 @@ function createProductCard(product) {
   const card = document.createElement("div");
   card.className = "product-card";
   card.innerHTML = `
+    <img class="product-img" src="${product.imageUrl}" alt="${product.name}" />
     <h3>${product.name || "Namnlös produkt"}</h3>
     <p>${product.price?.toFixed(2) || "0.00"} kr</p>
     
