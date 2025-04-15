@@ -1,0 +1,8 @@
+
+
+När användaren loggar ut, ta bort access token från localStorage
+
+---> localStorage.removeItem('accessToken'); <--
+
+// Om du använder sessionStorage istället, använd:
+// sessionStorage.removeItem('accessToken');
