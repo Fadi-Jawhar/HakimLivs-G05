@@ -9,6 +9,10 @@
     padding: 1rem;
     text-align: center;
   }
+  .product-card .product-img {
+    width: 150px;
+    height: auto;
+  }
   .product-card button {
     background: lightgray;
     border: none;
