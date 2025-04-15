@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (token) {
     loginButton.textContent = 'Logga ut';
     loginButton.href = '#';
-    loginButton.addEventListener('click', () => {
+    loginButton.addEventListener('click', (e) => {
+      e.preventDefault();
       localStorage.removeItem('token');
       window.location.reload();
     });
