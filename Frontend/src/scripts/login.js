@@ -1,5 +1,6 @@
 const baseUrl = "https://hakim-livs-g05-be.vercel.app/";
 
+
 document.getElementById("btn-login").addEventListener("click", loginUser);
 
 async function loginUser() { 
@@ -28,17 +29,15 @@ if (password.length >= 30 ) {
   });
 
   const data = await response.json();
-  console.log("Response status:", response.status);
-  console.log("Response OK?:", response.ok);
-  console.log("Response data:", data);
+
 
   if (response.ok) {
     if (data && data.accessToken) {
       localStorage.setItem('token', data.accessToken);
       document.getElementById("succes").innerText = "Inloggning lyckades!";
-
+      const decoded = jwt_decode(data.accessToken);
       setTimeout(() => {
-        window.location.href = "../index.html"; 
+        decoded.isAdmin ? window.location.href = "../dashboard/dashboard.html": window.location.href = "../index.html"
       }, 1000);
     } else {
       document.getElementById("error").innerText = "Ogiltigt användardata i svaret.";
