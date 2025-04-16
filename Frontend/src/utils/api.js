@@ -71,7 +71,7 @@ export async function registerUser(userData) {
     },
     body: JSON.stringify(userData),
   });
-
+  
   if (response.ok) {
     return await response.json();
   } else {
@@ -122,10 +122,16 @@ export async function createCategory(category) {
 
 export async function updateCategory(id, category) {
   try {
+    const token = localStorage.getItem("token")
+    
     const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(category),
+      headers: {
+      "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(category),
+    
     });
 
     if (!response.ok) {
@@ -162,28 +168,6 @@ export async function deleteCategory(id) {
     return { error: "Något gick fel. Försök igen senare." }
   }
 }
-export async function logoutUser(refToken) {
-  const url = `${getBaseUrl()}api/auth/logout`;
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ token: refToken })
-  });
-
-  const data = await response.json();
-
-  if (response.ok) {
-    console.log(data)
-    return data;
-  } else {
-    throw new Error(data.error || "Misslyckades med utloggning");
-  }
-}
-
-
 
 // Gamla funktionen
 
