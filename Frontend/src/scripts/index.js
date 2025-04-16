@@ -1,4 +1,4 @@
-import { fetchProducts } from "../utils/api.js";
+import { fetchProducts, logoutUser } from "../utils/api.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const regUserButton = document.querySelector(".reg-new-user");
   const loginButton = document.querySelector(".login-btn");
   const token = localStorage.getItem('token')
+  const refToken = localStorage.getItem('refToken')
   
   try {
     const decoded = jwt_decode(token);
@@ -22,10 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (token) {
     loginButton.textContent = 'Logga ut';
     loginButton.href = '#';
-    loginButton.addEventListener('click', (e) => {
+    loginButton.addEventListener('click', async (e) => {
       e.preventDefault();
       localStorage.removeItem('token');
-      window.location.reload();
+      try {
+        await logoutUser(refToken);
+      } catch (error) {
+        console.error("Fel vid utloggning:", error);
+      }
+      await window.location.reload();
     });
 
   } else {

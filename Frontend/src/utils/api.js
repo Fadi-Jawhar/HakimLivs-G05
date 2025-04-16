@@ -71,7 +71,7 @@ export async function registerUser(userData) {
     },
     body: JSON.stringify(userData),
   });
-  
+
   if (response.ok) {
     return await response.json();
   } else {
@@ -162,6 +162,28 @@ export async function deleteCategory(id) {
     return { error: "Något gick fel. Försök igen senare." }
   }
 }
+export async function logoutUser(refToken) {
+  const url = `${getBaseUrl()}api/auth/logout`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ token: refToken })
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    console.log(data)
+    return data;
+  } else {
+    throw new Error(data.error || "Misslyckades med utloggning");
+  }
+}
+
+
 
 // Gamla funktionen
 
