@@ -101,6 +101,7 @@ async function renderCategories() {
           deleteModal.hide();
           await renderCategories();
         });
+       
         
         document.addEventListener("DOMContentLoaded", () => {
           renderCategories();
