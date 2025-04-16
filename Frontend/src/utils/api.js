@@ -17,25 +17,40 @@ export async function fetchProducts() {
 
 export async function createProduct(product) {
   try {
-    const res = await fetch(`${getBaseUrl()}api/products`, {
+    const token = localStorage.getItem("token")
+
+    const response = await fetch(`${getBaseUrl()}api/products`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+       },
+      
       body: JSON.stringify(product),
     });
-    return await res.json();
+
+    if (!response.ok) {
+      throw new Error("Misslyckades att skapa en produkt.");
+    }
+
+    return await response.json();
   } catch (err) {
     console.error(err);
+    return { error: "Något gick fel. Försök igen senare." };
   }
 }
 
 export async function updateProduct(id, product) {
   try {
-    const res = await fetch(`${getBaseUrl()}api/products/${id}`, {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${getBaseUrl()}api/products/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+      Authorization: `Bearer ${token}` 
+      },
       body: JSON.stringify(product),
     });
-    return await res.json();
+    return await response.json();
   } catch (err) {
     console.error(err);
   }
@@ -43,10 +58,14 @@ export async function updateProduct(id, product) {
 
 export async function deleteProduct(id) {
   try {
-    const res = await fetch(`${getBaseUrl()}api/products/${id}`, {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${getBaseUrl()}api/products/${id}`, {
       method: "DELETE",
+      headers: {
+      Authorization: `Bearer ${token}`
+    }
     });
-    return await res.json();
+    return await response.json();
   } catch (err) {
     console.error(err);
   }
