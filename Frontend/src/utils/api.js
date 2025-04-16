@@ -103,9 +103,15 @@ export async function loginUser(credentials) {
 
 export async function createCategory(category) {
   try {
+    const token = localStorage.getItem("token")
+
     const response = await fetch(`${getBaseUrl()}api/category`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+       },
+      
       body: JSON.stringify(category),
     });
 
@@ -169,21 +175,3 @@ export async function deleteCategory(id) {
   }
 }
 
-// Gamla funktionen
-
-// export async function deleteCategory(id) {
-//   try {
-//     const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
-//       method: "DELETE",
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Misslyckades att radera kategori.");
-//     }
-
-//     return await response.json();
-//   } catch (err) {
-//     console.error(err);
-//     return { error: "Något gick fel. Försök igen senare." };
-//   }
-// }
