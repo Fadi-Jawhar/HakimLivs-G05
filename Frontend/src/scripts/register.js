@@ -14,9 +14,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   try {
     const decoded = jwt_decode(token);
-
-    const isUserAdmin = decoded.isAdmin
-    document.getElementById("btn-register").addEventListener("click", registerUser);
+    const isUserAdmin = decoded.isAdmin === true;
+    document.getElementById("btn-register").addEventListener("click", isUserAdmin ? registerAdmin : registerUser); 
 
     if (!isUserAdmin) {
       adminDiv.style.display = "none";
@@ -31,7 +30,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 async function registerUser(e) {
-  e.preventDefault();
+  e.preventDefault(); 
   const username = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const phone = document.getElementById("register-phone").value;
@@ -76,7 +75,7 @@ async function registerUser(e) {
 
   const decoded = jwt_decode(token);
   const isUserAdmin = decoded.isAdmin === true;
-
+  
   const userData = {
     username,
     email,
@@ -90,8 +89,7 @@ async function registerUser(e) {
   const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
   const response = await fetch(baseUrl + endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json", 
-      Authorization: `Bearer ${token}`, },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),
   });
 
