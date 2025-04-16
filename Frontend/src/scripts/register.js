@@ -14,9 +14,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   try {
     const decoded = jwt_decode(token);
-
     const isUserAdmin = decoded.isAdmin
-    document.getElementById("btn-register").addEventListener("click", registerUser);
+    document.getElementById("btn-register").addEventListener("click", isUserAdmin ? registerAdmin : registerUser); 
 
     if (!isUserAdmin) {
       adminDiv.style.display = "none";
@@ -31,13 +30,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 async function registerUser(e) {
-  e.preventDefault();
+  e.preventDefault(); 
   const username = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const phone = document.getElementById("register-phone").value;
   const password = document.getElementById("register-password").value;
   const confirm = document.getElementById("confirmPassword").value;
-  const isAdmin = document.getElementById("isAdmin").checked;  
+  const isAdminBox = document.getElementById("isAdmin").checked;  
   
   const errorMessage = document.getElementById("error");
   const successMessage = document.getElementById("succes");
@@ -51,22 +50,49 @@ async function registerUser(e) {
     return;
   }
 
+  if (username.length > 30) {
+    errorMessage.innerText = "Användarnamnet får max innehålla 30 tecken.";
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorMessage.innerText = "Ogiltig e-postadress.";
+    return;
+  }
+
+  if (phone.length > 15) {
+    errorMessage.innerText = "Telefonnumret får max innehålla 15 tecken.";
+    return;
+  }
+
+  if (password.length < 6 || password.length > 30) {
+    errorMessage.innerText = "Lösenordet måste vara mellan 6 och 30 tecken.";
+    return;
+  }
+
+  // _______________ Skapa användarobjekt ____________________
+  const token = localStorage.getItem("token");
+
+  const decoded = jwt_decode(token);
+  const isUserAdmin = decoded.isAdmin
   
   const userData = {
     username,
     email,
     phone,
     password,
-    isAdmin
+    isAdmin : isUserAdmin ? isAdminBox : false
   };
 
   console.log("User data being sent to server:", userData);
 
- 
-  const response = await fetch(baseUrl + "api/auth/register", {
+ const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
+  const response = await fetch(baseUrl + endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData)  
+    headers: { "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(userData),
   });
 
   const data = await response.json();
