@@ -34,6 +34,7 @@ if (password.length >= 30 ) {
   if (response.ok) {
     if (data && data.accessToken) {
       localStorage.setItem('token', data.accessToken);
+      localStorage.setItem('refToken', data.refreshToken);
       document.getElementById("succes").innerText = "Inloggning lyckades!";
       const decoded = jwt_decode(data.accessToken);
       setTimeout(() => {
