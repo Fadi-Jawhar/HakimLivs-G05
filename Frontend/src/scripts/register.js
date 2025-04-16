@@ -7,17 +7,14 @@ const adminDiv = document.querySelector(".form-check");
 // Visa admin-rutan endast om användaren är inloggad som admin
 window.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
-  if (!token) {
-    adminDiv.style.display = "none";
-    return;
-  }
+  document.getElementById("btn-register").addEventListener("click", registerUser); 
+  
 
   try {
     const decoded = jwt_decode(token);
-    const isUserAdmin = decoded.isAdmin
-    document.getElementById("btn-register").addEventListener("click", isUserAdmin ? registerAdmin : registerUser); 
+    const isUserAdmin = decoded?.isAdmin
 
-    if (!isUserAdmin) {
+    if (!isUserAdmin || !token) {
       adminDiv.style.display = "none";
     } else {
       adminDiv.style.display = "block";
@@ -44,6 +41,7 @@ async function registerUser(e) {
   errorMessage.innerText = "";
   successMessage.innerText = "";
 
+  // _______________ Validera användardata ____________________
 
   if (password !== confirm) {
     errorMessage.innerText = "Lösenorden matchar inte. Försök igen.";
@@ -71,8 +69,8 @@ async function registerUser(e) {
   }
 
   // _______________ Skapa användarobjekt ____________________
-  const token = localStorage.getItem("token");
 
+  const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
   const isUserAdmin = decoded.isAdmin
   
@@ -84,7 +82,6 @@ async function registerUser(e) {
     isAdmin : isUserAdmin ? isAdminBox : false
   };
 
-  console.log("User data being sent to server:", userData);
 
  const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
   const response = await fetch(baseUrl + endpoint, {
@@ -96,15 +93,14 @@ async function registerUser(e) {
   });
 
   const data = await response.json();
-
+ 
   if (response.ok) {
     successMessage.innerText = "Registrering lyckades!";
     await loginUser({ username, password });
     setTimeout(() => {
-      window.location.href = "../dashboard/dashboard.html"; 
+      window.location.href = "../index.html"; 
     }, 1000);
   } else {
-    console.log("Error response from server:", data);
     errorMessage.innerText =
       data.message || "Ett fel uppstod vid registrering.";
   }
