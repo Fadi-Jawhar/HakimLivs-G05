@@ -15,6 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
   try {
     const decoded = jwt_decode(token);
     const isUserAdmin = decoded.isAdmin === true;
+    document.getElementById("btn-register").addEventListener("click", isUserAdmin ? registerAdmin : registerUser); 
 
     if (!isUserAdmin) {
       adminDiv.style.display = "none";
@@ -27,9 +28,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.getElementById("btn-register").addEventListener("click", registerUser);
 
-async function registerUser() {
+async function registerUser(e) {
+  e.preventDefault(); 
   const username = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const phone = document.getElementById("register-phone").value;
@@ -70,17 +71,23 @@ async function registerUser() {
   }
 
   // _______________ Skapa användarobjekt ____________________
+  const token = localStorage.getItem("token");
+
+  const decoded = jwt_decode(token);
+  const isUserAdmin = decoded.isAdmin === true;
+  
   const userData = {
     username,
     email,
     phone,
     password,
-    isAdmin: isAdminBox,
+    isAdmin: isUserAdmin ? isAdminBox : false
   };
 
   console.log("User data being sent to server:", userData);
 
-  const response = await fetch(baseUrl + "api/auth/register", {
+  const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
+  const response = await fetch(baseUrl + endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),
@@ -100,8 +107,6 @@ async function registerUser() {
       data.message || "Ett fel uppstod vid registrering.";
   }
 }
-
-// __________________________ Live feedback för längdbegränsning __________________________
 
 document.getElementById("register-username").addEventListener("input", () => {
   const value = document.getElementById("register-username").value;
