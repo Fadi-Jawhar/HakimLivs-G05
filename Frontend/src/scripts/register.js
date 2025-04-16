@@ -14,9 +14,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   try {
     const decoded = jwt_decode(token);
-
-    const isUserAdmin = decoded.isAdmin
-    document.getElementById("btn-register").addEventListener("click", registerUser);
+    const isUserAdmin = decoded.isAdmin === true;
+    document.getElementById("btn-register").addEventListener("click", isUserAdmin ? registerAdmin : registerUser); 
 
     if (!isUserAdmin) {
       adminDiv.style.display = "none";
@@ -31,7 +30,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 async function registerUser(e) {
-  e.preventDefault();
+  e.preventDefault(); 
   const username = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const phone = document.getElementById("register-phone").value;
@@ -51,6 +50,31 @@ async function registerUser(e) {
     return;
   }
 
+  if (username.length > 30) {
+    errorMessage.innerText = "Användarnamnet får max innehålla 30 tecken.";
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorMessage.innerText = "Ogiltig e-postadress.";
+    return;
+  }
+
+  if (phone.length > 15) {
+    errorMessage.innerText = "Telefonnumret får max innehålla 15 tecken.";
+    return;
+  }
+
+  if (password.length < 6 || password.length > 30) {
+    errorMessage.innerText = "Lösenordet måste vara mellan 6 och 30 tecken.";
+    return;
+  }
+
+  // _______________ Skapa användarobjekt ____________________
+  const token = localStorage.getItem("token");
+
+  const decoded = jwt_decode(token);
+  const isUserAdmin = decoded.isAdmin === true;
   
   const userData = {
     username,
@@ -66,7 +90,7 @@ async function registerUser(e) {
   const response = await fetch(baseUrl + "api/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData)  
+    body: JSON.stringify(userData),
   });
 
   const data = await response.json();
