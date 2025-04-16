@@ -141,18 +141,43 @@ export async function updateCategory(id, category) {
 
 export async function deleteCategory(id) {
   try {
+    const token = localStorage.getItem("token")
+
     const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) {
-      throw new Error("Misslyckades att radera kategori.");
+      const error = await response.json()
+      console.error("Error response:", error)
+      throw new Error("Misslyckades att radera kategori.")
     }
 
-    return await response.json();
+    return await response.json()
   } catch (err) {
-    console.error(err);
-    return { error: "Något gick fel. Försök igen senare." };
+    console.error("Fetch error:", err)
+    return { error: "Något gick fel. Försök igen senare." }
   }
 }
 
+// Gamla funktionen
+
+// export async function deleteCategory(id) {
+//   try {
+//     const response = await fetch(`${getBaseUrl()}api/category/${id}`, {
+//       method: "DELETE",
+//     });
+
+//     if (!response.ok) {
+//       throw new Error("Misslyckades att radera kategori.");
+//     }
+
+//     return await response.json();
+//   } catch (err) {
+//     console.error(err);
+//     return { error: "Något gick fel. Försök igen senare." };
+//   }
+// }
