@@ -6,8 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
   updateCartModal();
   updateCartIcon();
+  const regUserButton = document.querySelector(".reg-new-user");
   const loginButton = document.querySelector(".login-btn");
   const token = localStorage.getItem('token')
+  
+  try {
+    const decoded = jwt_decode(token);
+    if (decoded.isAdmin){
+      regUserButton.textContent = 'Registrera ny användare';
+    }
+  } catch (error) {
+    console.warn('Ogiltig token:', error.message);
+  }
 
   if (token) {
     loginButton.textContent = 'Logga ut';
