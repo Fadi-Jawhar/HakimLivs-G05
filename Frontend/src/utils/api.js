@@ -101,6 +101,7 @@ export async function loginUser(credentials) {
   }
 }
 
+
 export async function createCategory(category) {
   try {
     const token = localStorage.getItem("token")
@@ -175,3 +176,23 @@ export async function deleteCategory(id) {
   }
 }
 
+export async function logoutUser(refToken) {
+  const url = `${getBaseUrl()}api/auth/logout`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ token: refToken })
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    console.log(data)
+    return data;
+  } else {
+    throw new Error(data.error || "Misslyckades med utloggning");
+  }
+}
