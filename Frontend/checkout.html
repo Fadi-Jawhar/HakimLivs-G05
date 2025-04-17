@@ -252,17 +252,34 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script>
-    import logoutUser from "./utils/api.js";
+    async function logoutUser(refToken) {
+      const url = `https://hakim-livs-g05-be.vercel.app/api/auth/logout`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token: refToken })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data)
+        return data;
+      } else {
+        throw new Error(data.error || "Misslyckades med utloggning");
+      }
+    }
     document.addEventListener("DOMContentLoaded", function () {
       const isLoggedIn = localStorage.getItem("token"); // eller använd sessionslagring om du föredrar
       const checkoutButton = document.getElementById("placeOrderBtn");
       const loginButton = document.querySelector(".login-btn");
       const token = localStorage.getItem("token");
       const refToken = localStorage.getItem("refToken");
-
       if (token && refToken) {
         try {
-          const decodedToken = jwt_decode(token);
           loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga ut';
           loginButton.addEventListener("click", function (e) {
             e.preventDefault();
