@@ -260,8 +260,6 @@
       const token = localStorage.getItem("token");
       const refToken = localStorage.getItem("refToken");
 
-      // David fortsätt med detta
-
       if (token && refToken) {
         try {
           const decodedToken = jwt_decode(token);
