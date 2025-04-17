@@ -54,6 +54,10 @@ async function renderCategories() {
            alert("Alla fält måste fyllas i.");
           return;
          }
+         if (category.length > 50 || category.length < 1) {
+          alert("Kategorinamn måste vara mellan 1 och 50 tecken.");
+          return;
+        }
 
         const newCategory = { category };
 
