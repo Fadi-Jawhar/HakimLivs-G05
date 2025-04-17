@@ -87,7 +87,11 @@ async function loadProducts() {
       const addToCartBtn = productCard.querySelector(".add-to-cart-btn");
       addToCartBtn.addEventListener("click", () => {
         addToCart(product);
-        showCartModal();
+        const confirmPurchase = productCard.querySelector(".confirm-purchase");
+        confirmPurchase.textContent = `Lagt till 1 st av ${product.name || "okänd produkt"} i varukorgen`;
+      setTimeout(() => {
+          confirmPurchase.textContent = "";
+      },3000 );
       });
     });
   } catch (error) {
@@ -105,6 +109,7 @@ function createProductCard(product) {
     <p>${product.price?.toFixed(2) || "0.00"} kr</p>
     
     <button class="add-to-cart-btn">Lägg i varukorgen</button>
+    <p class="confirm-purchase" style="color: green"></p>
   `;
   return card;
 }
