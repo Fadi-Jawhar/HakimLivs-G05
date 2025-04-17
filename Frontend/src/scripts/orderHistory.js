@@ -9,7 +9,6 @@ const fetchUser = async (id) => {
         }
     });
     const data = await response.json();
-    console.log(data)
    return data
 }
 const fetchOrderHistory = async () => {
@@ -21,7 +20,6 @@ const fetchOrderHistory = async () => {
         }
     });
     const data = response.ok ? await response.json() : [];
-    console.log(data)
     const rows = await Promise.all(
         data.map(async (order) => {
           const user = await fetchUser(order.user);
