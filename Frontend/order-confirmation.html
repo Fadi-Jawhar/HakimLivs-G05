@@ -23,7 +23,7 @@
           </button>
         </div>
         <div class="auth-menu">
-          <a href="./auth/login.html" class="login-btn"><i class="fa-regular fa-user"></i> Logga in</a>
+          <a href="./auth/login.html" class="login-btn"><i class="fa-regular fa-user"></i></a>
           <a href="#" id="cartButton" class="cart">
             <i class="fa-solid fa-cart-shopping"></i>
             <span class="cart-text">Varukorg</span>
@@ -131,6 +131,58 @@
     </div>
   </footer>
   <script>
+     async function logoutUser(refToken) {
+      const url = `https://hakim-livs-g05-be.vercel.app/api/auth/logout`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token: refToken })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data)
+        return data;
+      } else {
+        throw new Error(data.error || "Misslyckades med utloggning");
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderNumber = urlParams.get('order');
+  if (orderNumber) {
+    document.getElementById('orderNumber').textContent = orderNumber;
+  }
+
+  const loginButton = document.querySelector(".login-btn");
+  const token = localStorage.getItem("token");
+  const refToken = localStorage.getItem("refToken");
+
+  if (refToken) {
+    try {
+      loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga ut';
+      loginButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        localStorage.removeItem("refToken");
+        localStorage.removeItem("token");
+        window.location.href = "./index.html";
+        logoutUser(refToken);
+      });
+    } catch (error) {
+      console.error("Kunde inte decoda token:", error);
+    }
+  } else {
+    loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga in';
+    loginButton.addEventListener("click", function () {
+      window.location.href = "./auth/login.html";
+    });
+  }
+});
+
     const urlParams = new URLSearchParams(window.location.search);
     const orderNumber = urlParams.get('order');
     if (orderNumber) {

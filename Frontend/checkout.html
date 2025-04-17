@@ -278,20 +278,21 @@
       const loginButton = document.querySelector(".login-btn");
       const token = localStorage.getItem("token");
       const refToken = localStorage.getItem("refToken");
-      if (token && refToken) {
+      if (refToken) {
         try {
           loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga ut';
           loginButton.addEventListener("click", function (e) {
             e.preventDefault();
+            localStorage.removeItem("refToken");
             localStorage.removeItem("token");
-            location.reload();
             logoutUser(refToken)
+            location.reload();
           });
         } catch (error) {
           console.error("Kunde inte decoda token:", error);
         }
       } else {
-        loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga in';
+        loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga ut';
       }
 
       if (!isLoggedIn) {
