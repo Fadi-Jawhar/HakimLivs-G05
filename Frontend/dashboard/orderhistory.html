@@ -18,6 +18,7 @@
       crossorigin="anonymous"
       defer
     ></script>
+    <script type="module" src="../src/scripts/orderHistory.js" defer></script>
   </head>
 
   <body style="background-color: #d6d6d6" class="text-dark">
@@ -106,13 +107,13 @@
                 <tr>
                   <th scope="col">Beställnings-ID</th>
                   <th scope="col">Kundnamn</th>
-                  <th scope="col">Produkt(er)</th>
+                  <th scope="col">Summa</th>
                   <th scope="col">Datum</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
-              <tbody>
-                <!-- Beställningar kommer att renderas här -->
+              <tbody class="table-body">
+
                 <tr>
                   <td colspan="5" class="text-center">Inga beställningar än</td>
                 </tr>
