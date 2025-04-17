@@ -9,14 +9,18 @@
   <link rel="stylesheet" href="src/css/shop.css">
   <script src="https://kit.fontawesome.com/890db5bae4.js" crossorigin="anonymous"></script>
   <style>
-    .hidden { display: none; }
-    .error-message { 
-      color: red; 
+    .hidden {
+      display: none;
+    }
+
+    .error-message {
+      color: red;
       margin-top: 10px;
       padding: 10px;
       background-color: #ffeeee;
       border-radius: 4px;
     }
+
     .loading-spinner {
       text-align: center;
       padding: 20px;
@@ -41,7 +45,7 @@
           </button>
         </div>
         <div class="auth-menu">
-          <a href="./dashboard/category.html" class="login-btn"><i class="fa-regular fa-user"></i> Logga in</a>
+          <a href="./dashboard/category.html" class="login-btn"></a>
           <a href="#" id="cartButton" class="cart">
             <i class="fa-solid fa-cart-shopping"></i>
             <span class="cart-text">Varukorg</span>
@@ -74,7 +78,7 @@
           </ul>
         </div>
       </div>
-    </nav>  
+    </nav>
   </header>
 
   <main class="checkout-container">
@@ -116,7 +120,7 @@
             <input type="email" name="email" placeholder="Email" required />
             <input type="tel" name="phone" placeholder="Telefonnummer" required />
           </div>
-          
+
           <div id="shippingAddressFields" style="display: none; margin-top: 20px;">
             <h4>Leveransadress</h4>
             <div class="form-row">
@@ -147,16 +151,17 @@
             </label>
           </div>
         </div>
-        
+
         <div id="swishDetails" class="payment-details">
           <p>Betala enkelt med Swish. Du kommer att få ett meddelande i din Swish-app för att bekräfta betalningen.</p>
           <div class="input-group">
             <label for="swishPhone">Swish-telefonnummer</label>
-            <input type="tel" id="swishPhone" name="swishPhone" placeholder="07XXXXXXXX" pattern="07[0-9]{8}" required />
+            <input type="tel" id="swishPhone" name="swishPhone" placeholder="07XXXXXXXX" pattern="07[0-9]{8}"
+              required />
             <small>Ditt Swish-registrerade telefonnummer</small>
           </div>
         </div>
-        
+
         <div class="checkout-actions">
           <button id="placeOrderBtn" class="checkout-button">
             <i class="fa-solid fa-lock"></i> Betala med Swish
@@ -178,7 +183,7 @@
       </section>
     </div>
   </main>
-  
+
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-slogan">
@@ -245,69 +250,91 @@
       </div>
     </div>
   </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const isLoggedIn = localStorage.getItem("token"); // eller använd sessionslagring om du föredrar
-    const checkoutButton = document.getElementById("placeOrderBtn");
+    import logoutUser from "./utils/api.js";
+    document.addEventListener("DOMContentLoaded", function () {
+      const isLoggedIn = localStorage.getItem("token"); // eller använd sessionslagring om du föredrar
+      const checkoutButton = document.getElementById("placeOrderBtn");
+      const loginButton = document.querySelector(".login-btn");
+      const token = localStorage.getItem("token");
+      const refToken = localStorage.getItem("refToken");
 
+      // David fortsätt med detta
 
-  if (!isLoggedIn) {
-    checkoutButton.textContent = "Logga in för att fortsätta";
-    checkoutButton.addEventListener("click", () => {
-      // Spara nuvarande sida som redirect-target
-      localStorage.setItem("redirectAfterLogin", "checkout.html");
-      window.location.href = "./auth/login.html";
+      if (token && refToken) {
+        try {
+          const decodedToken = jwt_decode(token);
+          loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga ut';
+          loginButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("token");
+            location.reload();
+            logoutUser(refToken)
+          });
+        } catch (error) {
+          console.error("Kunde inte decoda token:", error);
+        }
+      } else {
+        loginButton.innerHTML = '<i class="fa-regular fa-user"></i> Logga in';
+      }
+
+      if (!isLoggedIn) {
+        checkoutButton.textContent = "Logga in för att fortsätta";
+        checkoutButton.addEventListener("click", () => {
+          // Spara nuvarande sida som redirect-target
+          localStorage.setItem("redirectAfterLogin", "checkout.html");
+          window.location.href = "./auth/login.html";
+        });
+      } else {
+        checkoutButton.textContent = "Betala med Swish";
+        checkoutButton.addEventListener("click", () => {
+          // Din betalningslogik här
+          alert("Betalning med Swish initierad!");
+        });
+      }
     });
-  } else {
-    checkoutButton.textContent = "Betala med Swish";
-    checkoutButton.addEventListener("click", () => {
-      // Din betalningslogik här
-      alert("Betalning med Swish initierad!");
-    });
-  }
-});
-  function getCart() {
-    try {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      return Array.isArray(cart) ? cart : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function renderCart() {
-    const cart = getCart();
-    const cartItemsContainer = document.getElementById("cartItemsContainer");
-    let cartSubtotal = 0;
-    let cartTotal = 0;
-
-    if (!cartItemsContainer) {
-      console.error("Varukorgscontainern hittades inte");
-      return;
+    function getCart() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        return Array.isArray(cart) ? cart : [];
+      } catch {
+        return [];
+      }
     }
 
-    if (cart.length === 0) {
-      cartItemsContainer.innerHTML = "<p>Din varukorg är tom.</p>";
-      updateCartTotals(0, 0);
-      return;
-    }
+    function renderCart() {
+      const cart = getCart();
+      const cartItemsContainer = document.getElementById("cartItemsContainer");
+      let cartSubtotal = 0;
+      let cartTotal = 0;
 
-    cartItemsContainer.innerHTML = '';
-    
-    cart.forEach((item, index) => {
-      if (!item || !item.price || !item.quantity) {
-        console.warn("Ogiltigt varukorgsobjekt:", item);
+      if (!cartItemsContainer) {
+        console.error("Varukorgscontainern hittades inte");
         return;
       }
 
-      const itemTotal = item.price * item.quantity;
-      cartSubtotal += itemTotal;
-      cartTotal += itemTotal;
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Din varukorg är tom.</p>";
+        updateCartTotals(0, 0);
+        return;
+      }
 
-      const itemElement = document.createElement("div");
-      itemElement.classList.add("cart-item");
-      itemElement.innerHTML = `
+      cartItemsContainer.innerHTML = '';
+
+      cart.forEach((item, index) => {
+        if (!item || !item.price || !item.quantity) {
+          console.warn("Ogiltigt varukorgsobjekt:", item);
+          return;
+        }
+
+        const itemTotal = item.price * item.quantity;
+        cartSubtotal += itemTotal;
+        cartTotal += itemTotal;
+
+        const itemElement = document.createElement("div");
+        itemElement.classList.add("cart-item");
+        itemElement.innerHTML = `
         <div class="product-info">
           <span class="product-name">${item.name || 'Okänd produkt'}</span>
         </div>
@@ -322,167 +349,168 @@
           <button class="remove-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
         </div>
       `;
-      cartItemsContainer.appendChild(itemElement);
-    });
+        cartItemsContainer.appendChild(itemElement);
+      });
 
-    updateCartTotals(cartSubtotal, cartTotal);
-    setupCartEventListeners();
-  }
-
-  function updateCartTotals(subtotal, total) {
-    const subtotalElement = document.getElementById("cartSubtotal");
-    const totalElement = document.getElementById("cartTotal");
-    const counterElement = document.getElementById("cartCounter");
-
-    if (subtotalElement) subtotalElement.textContent = `${subtotal.toFixed(2)} kr`;
-    if (totalElement) totalElement.textContent = `${total.toFixed(2)} kr`;
-    
-    const cart = getCart();
-    if (counterElement) {
-      counterElement.textContent = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      updateCartTotals(cartSubtotal, cartTotal);
+      setupCartEventListeners();
     }
-  }
 
-  function setupCartEventListeners() {
+    function updateCartTotals(subtotal, total) {
+      const subtotalElement = document.getElementById("cartSubtotal");
+      const totalElement = document.getElementById("cartTotal");
+      const counterElement = document.getElementById("cartCounter");
 
-    document.querySelectorAll(".decrement").forEach(btn => {
-      btn.addEventListener("click", function() {
-        const index = this.getAttribute("data-index");
-        const cart = getCart();
-        if (cart[index] && cart[index].quantity > 1) {
-          cart[index].quantity--;
-          localStorage.setItem("cart", JSON.stringify(cart));
-          renderCart();
-        }
-      });
-    });
+      if (subtotalElement) subtotalElement.textContent = `${subtotal.toFixed(2)} kr`;
+      if (totalElement) totalElement.textContent = `${total.toFixed(2)} kr`;
 
-    document.querySelectorAll(".increment").forEach(btn => {
-      btn.addEventListener("click", function() {
-        const index = this.getAttribute("data-index");
-        const cart = getCart();
-        if (cart[index]) {
-          cart[index].quantity++;
-          localStorage.setItem("cart", JSON.stringify(cart));
-          renderCart();
-        }
-      });
-    });
-
-    document.querySelectorAll(".remove-btn").forEach(btn => {
-      btn.addEventListener("click", function() {
-        const index = this.getAttribute("data-index");
-        const cart = getCart();
-        if (cart[index]) {
-          cart.splice(index, 1);
-          localStorage.setItem("cart", JSON.stringify(cart));
-          renderCart();
-        }
-      });
-    });
-
-    document.querySelectorAll(".quantity-input").forEach(input => {
-      input.addEventListener("change", function() {
-        const index = this.getAttribute("data-index");
-        const newQuantity = parseInt(this.value);
-        const cart = getCart();
-        
-        if (cart[index] && newQuantity > 0) {
-          cart[index].quantity = newQuantity;
-          localStorage.setItem("cart", JSON.stringify(cart));
-          renderCart();
-        } else {
-          alert("Antal kan inte vara mindre än 1.");
-          this.value = cart[index]?.quantity || 1;
-        }
-      });
-    });
-  }
-
-  const shipToDifferent = document.getElementById("shipToDifferent");
-  const shippingFields = document.getElementById("shippingAddressFields");
-  
-  if (shipToDifferent && shippingFields) {
-    shipToDifferent.addEventListener("change", function() {
-      shippingFields.style.display = this.checked ? "block" : "none";
-    });
-  }
-
-  const placeOrderBtn = document.getElementById("placeOrderBtn");
-  if (placeOrderBtn) {
-    placeOrderBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      
-      // Validera formulär
-      const form = document.getElementById("checkoutForm");
-      const swishPhoneInput = document.getElementById("swishPhone");
-      const errorMessage = document.getElementById("errorMessage");
-      
-      if (!form || !swishPhoneInput || !errorMessage) {
-        console.error("Nödvändiga element för betalning saknas");
-        return;
+      const cart = getCart();
+      if (counterElement) {
+        counterElement.textContent = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
       }
-      
-      const swishPhone = swishPhoneInput.value;
-      
-      if (!form.checkValidity()) {
-        errorMessage.textContent = "Vänligen fyll i alla obligatoriska fält.";
-        errorMessage.classList.remove("hidden");
-        return;
-      }
-      
-      if (!/^07[0-9]{8}$/.test(swishPhone)) {
-        errorMessage.textContent = "Ange ett giltigt Swish-telefonnummer (07XXXXXXXX).";
-        errorMessage.classList.remove("hidden");
-        return;
-      }
-      
-      errorMessage.classList.add("hidden");
-      
-      const progressIndicator = document.getElementById("progressIndicator");
-      const progressBar = document.getElementById("paymentProgressBar");
-      const progressStatus = document.getElementById("progressStatus");
-      
-      if (!progressIndicator || !progressBar || !progressStatus) {
-        console.error("Element för betalningsindikator saknas");
-        return;
-      }
-      
-      progressIndicator.classList.remove("hidden");
-    
-      const steps = [
-        "Initierar betalning...",
-        "Kontrollerar Swish-uppgifter...",
-        "Väntar på godkännande i appen...",
-        "Betalning godkänd!"
-      ];
-      
-      let step = 0;
-      progressStatus.textContent = steps[step];
-      progressBar.style.width = "25%";
-      
-      const paymentInterval = setInterval(() => {
-        step++;
-        
-        if (step < steps.length) {
-          progressStatus.textContent = steps[step];
-          progressBar.style.width = `${(step + 1) * 25}%`;
-        } else {
-          clearInterval(paymentInterval);
-          
-          setTimeout(() => {
-            localStorage.removeItem("cart");
-            const orderNumber = `HKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-            window.location.href = `order-confirmation.html?order=${orderNumber}`;
-          }, 1000);
+    }
+
+    function setupCartEventListeners() {
+
+      document.querySelectorAll(".decrement").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const index = this.getAttribute("data-index");
+          const cart = getCart();
+          if (cart[index] && cart[index].quantity > 1) {
+            cart[index].quantity--;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
+          }
+        });
+      });
+
+      document.querySelectorAll(".increment").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const index = this.getAttribute("data-index");
+          const cart = getCart();
+          if (cart[index]) {
+            cart[index].quantity++;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
+          }
+        });
+      });
+
+      document.querySelectorAll(".remove-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const index = this.getAttribute("data-index");
+          const cart = getCart();
+          if (cart[index]) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
+          }
+        });
+      });
+
+      document.querySelectorAll(".quantity-input").forEach(input => {
+        input.addEventListener("change", function () {
+          const index = this.getAttribute("data-index");
+          const newQuantity = parseInt(this.value);
+          const cart = getCart();
+
+          if (cart[index] && newQuantity > 0) {
+            cart[index].quantity = newQuantity;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
+          } else {
+            alert("Antal kan inte vara mindre än 1.");
+            this.value = cart[index]?.quantity || 1;
+          }
+        });
+      });
+    }
+
+    const shipToDifferent = document.getElementById("shipToDifferent");
+    const shippingFields = document.getElementById("shippingAddressFields");
+
+    if (shipToDifferent && shippingFields) {
+      shipToDifferent.addEventListener("change", function () {
+        shippingFields.style.display = this.checked ? "block" : "none";
+      });
+    }
+
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    if (placeOrderBtn) {
+      placeOrderBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Validera formulär
+        const form = document.getElementById("checkoutForm");
+        const swishPhoneInput = document.getElementById("swishPhone");
+        const errorMessage = document.getElementById("errorMessage");
+
+        if (!form || !swishPhoneInput || !errorMessage) {
+          console.error("Nödvändiga element för betalning saknas");
+          return;
         }
-      }, 1500);
-    });
-  }
+
+        const swishPhone = swishPhoneInput.value;
+
+        if (!form.checkValidity()) {
+          errorMessage.textContent = "Vänligen fyll i alla obligatoriska fält.";
+          errorMessage.classList.remove("hidden");
+          return;
+        }
+
+        if (!/^07[0-9]{8}$/.test(swishPhone)) {
+          errorMessage.textContent = "Ange ett giltigt Swish-telefonnummer (07XXXXXXXX).";
+          errorMessage.classList.remove("hidden");
+          return;
+        }
+
+        errorMessage.classList.add("hidden");
+
+        const progressIndicator = document.getElementById("progressIndicator");
+        const progressBar = document.getElementById("paymentProgressBar");
+        const progressStatus = document.getElementById("progressStatus");
+
+        if (!progressIndicator || !progressBar || !progressStatus) {
+          console.error("Element för betalningsindikator saknas");
+          return;
+        }
+
+        progressIndicator.classList.remove("hidden");
+
+        const steps = [
+          "Initierar betalning...",
+          "Kontrollerar Swish-uppgifter...",
+          "Väntar på godkännande i appen...",
+          "Betalning godkänd!"
+        ];
+
+        let step = 0;
+        progressStatus.textContent = steps[step];
+        progressBar.style.width = "25%";
+
+        const paymentInterval = setInterval(() => {
+          step++;
+
+          if (step < steps.length) {
+            progressStatus.textContent = steps[step];
+            progressBar.style.width = `${(step + 1) * 25}%`;
+          } else {
+            clearInterval(paymentInterval);
+
+            setTimeout(() => {
+              localStorage.removeItem("cart");
+              const orderNumber = `HKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+              window.location.href = `order-confirmation.html?order=${orderNumber}`;
+            }, 1000);
+          }
+        }, 1500);
+      });
+    }
 
 
-  renderCart();
+    renderCart();
 
   </script>
 </body>
-</html> 
+
+</html>

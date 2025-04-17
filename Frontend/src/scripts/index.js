@@ -88,7 +88,7 @@ async function loadProducts() {
       addToCartBtn.addEventListener("click", () => {
         addToCart(product);
         const confirmPurchase = productCard.querySelector(".confirm-purchase");
-        confirmPurchase.textContent = `Lagt till 1 st av ${product.name || "okänd produkt"} i varukorgen`;
+        confirmPurchase.textContent = `Lagt till 1 st av ${product.name || "namnlös produkt"} i varukorgen`;
       setTimeout(() => {
           confirmPurchase.textContent = "";
       },3000 );

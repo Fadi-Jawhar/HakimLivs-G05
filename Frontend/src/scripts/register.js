@@ -7,34 +7,38 @@ const adminDiv = document.querySelector(".form-check");
 // Visa admin-rutan endast om användaren är inloggad som admin
 window.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
-  document.getElementById("btn-register").addEventListener("click", registerUser); 
-  
-
-  try {
-    const decoded = jwt_decode(token);
-    const isUserAdmin = decoded?.isAdmin
-
-    if (!isUserAdmin || !token) {
-      adminDiv.style.display = "none";
-    } else {
-      adminDiv.style.display = "block";
-    }
-  } catch (err) {
-    console.error("Kunde inte avkoda token:", err);
+  document.getElementById("btn-register").addEventListener("click", registerUser);
+  let decoded = null
+  let isUserAdmin = false
+  if (!token) {
     adminDiv.style.display = "none";
-  }
-});
+    return;
+  } else {
+    try {
+      decoded = jwt_decode(token);
+      isUserAdmin = decoded?.isAdmin
 
+      if (!isUserAdmin || !token) {
+        adminDiv.style.display = "none";
+      } else {
+        adminDiv.style.display = "block";
+      }
+    } catch (err) {
+      console.error("Kunde inte avkoda token:", err);
+      adminDiv.style.display = "none";
+    }
+  }
+})
 
 async function registerUser(e) {
-  e.preventDefault(); 
+  e.preventDefault();
   const username = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const phone = document.getElementById("register-phone").value;
   const password = document.getElementById("register-password").value;
   const confirm = document.getElementById("confirmPassword").value;
-  const isAdminBox = document.getElementById("isAdmin").checked;  
-  
+  const isAdminBox = document.getElementById("isAdmin").checked;
+
   const errorMessage = document.getElementById("error");
   const successMessage = document.getElementById("succes");
 
@@ -71,35 +75,60 @@ async function registerUser(e) {
   // _______________ Skapa användarobjekt ____________________
 
   const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
-  const isUserAdmin = decoded.isAdmin
-  
+  let decoded = null;
+  let isUserAdmin = false;
+
+  if (token) {
+    try {
+      decoded = jwt_decode(token);
+      isUserAdmin = decoded?.isAdmin || false;
+    } catch (err) {
+      console.error("Kunde inte avkoda token i registerUser:", err.message);
+    }
+  }
+
   const userData = {
     username,
     email,
     phone,
     password,
-    isAdmin : isUserAdmin ? isAdminBox : false
+    isAdmin: isUserAdmin ? isAdminBox.checked : false
   };
 
 
- const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
+  const endpoint = isUserAdmin ? "api/auth/registerAdmin" : "api/auth/register";
   const response = await fetch(baseUrl + endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json",
+    headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(userData),
   });
 
   const data = await response.json();
- 
+
   if (response.ok) {
-    successMessage.innerText = "Registrering lyckades!";
-    await loginUser({ username, password });
-    setTimeout(() => {
-      window.location.href = "../index.html"; 
-    }, 1000);
+    if (isUserAdmin) {
+      if (isAdminBox?.checked) {
+        successMessage.innerText = "Ny admin skapad!";
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
+        return;
+      } else {
+        successMessage.innerText = "Ny användare skapad!";
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
+      }
+    } else {
+      successMessage.innerText = "Registrering lyckades!";
+      await loginUser({ username, password });
+      setTimeout(() => {
+          window.location.href = "../index.html";
+      }, 1000);
+    }
   } else {
     errorMessage.innerText =
       data.message || "Ett fel uppstod vid registrering.";
