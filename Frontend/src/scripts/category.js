@@ -104,6 +104,7 @@ async function renderCategories() {
           await deleteCategory(id);
           deleteModal.hide();
           await renderCategories();
+          alert("Kategori borttagen")
         });
        
         
