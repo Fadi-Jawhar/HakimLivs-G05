@@ -105,3 +105,57 @@ async function registerUser(e) {
       data.message || "Ett fel uppstod vid registrering.";
   }
 }
+
+document.getElementById("register-username").addEventListener("input", () => {
+  const value = document.getElementById("register-username").value;
+  const error = document.getElementById("error");
+  if (value.length >= 30) {
+    error.innerText = "Max 30 tecken för användarnamn.";
+  } else {
+    error.innerText = "";
+  }
+});
+
+document.getElementById("register-email").addEventListener("input", () => {
+  const value = document.getElementById("register-email").value;
+  const error = document.getElementById("error");
+  if (value.length >= 40) {
+    error.innerText = "Max 40 tecken för epost.";
+  } else {
+    error.innerText = "";
+  }
+});
+
+document.getElementById("register-phone").addEventListener("input", () => {
+  const value = document.getElementById("register-phone").value;
+  const error = document.getElementById("error");
+  if (value.length >= 15) {
+    error.innerText = "Max 15 tecken för telefonnummer.";
+  } else {
+    error.innerText = "";
+  }
+});
+
+document.getElementById("register-password").addEventListener("input", () => {
+  const value = document.getElementById("register-password").value;
+  const error = document.getElementById("error");
+  if (value.length >= 30) {
+    error.innerText = "Max 30 tecken för lösenord.";
+  } else {
+    error.innerText = "";
+  }
+});
+
+
+document.getElementById("confirmPassword").addEventListener("input", () => {
+  const password = document.getElementById("register-password").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  const error = document.getElementById("error");
+
+  if (confirm !== password) {
+    error.innerText = "Lösenorden matchar inte.";
+  } else {
+    error.innerText = "";
+  }
+});
+
