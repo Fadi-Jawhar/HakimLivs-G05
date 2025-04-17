@@ -304,7 +304,7 @@
         });
       } else {
         checkoutButton.textContent = "Betala med Swish";
-      
+
       }
     });
     function getCart() {
@@ -467,9 +467,16 @@
 
         if (!form.checkValidity()) {
           errorMessage.textContent = "Vänligen fyll i alla obligatoriska fält.";
+          form.reportValidity(); // visar inbyggda valideringsmeddelanden
+          const firstInvalid = form.querySelector(":invalid");
+          if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstInvalid.focus();
+          }
           errorMessage.classList.remove("hidden");
           return;
         }
+
 
         if (!/^07[0-9]{8}$/.test(swishPhone)) {
           errorMessage.textContent = "Ange ett giltigt Swish-telefonnummer (07XXXXXXXX).";
