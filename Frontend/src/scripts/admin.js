@@ -110,6 +110,7 @@ import {
         const id = button.dataset.id;
         await deleteProduct(id);
         await renderProducts();
+        alert("Produkt borttagen")
       });
     });
   
