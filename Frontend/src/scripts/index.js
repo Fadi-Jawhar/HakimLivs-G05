@@ -1,11 +1,12 @@
 import { fetchProducts, logoutUser } from "../utils/api.js";
 
-
 document.addEventListener("DOMContentLoaded", () => {
   loadCartFromLocalStorage();
   loadProducts();
   updateCartModal();
   updateCartIcon();
+  const dashboardButton = document.querySelector(".admin-dashboard");
+  const dashboardLink = document.querySelector(".dashboard-link");
   const regUserButton = document.querySelector(".reg-new-user");
   const loginButton = document.querySelector(".login-btn");
   const token = localStorage.getItem('token')
@@ -15,7 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const decoded = jwt_decode(token);
     if (decoded.isAdmin){
       regUserButton.textContent = 'Registrera ny användare';
-    }
+      dashboardButton.style.display = 'block';
+      dashboardLink.href = './dashboard/dashboard.html';
+    } else{
+      dashboardButton.style.display = 'none';
+    } 
   } catch (error) {
     console.warn('Ogiltig token:', error.message);
   }
