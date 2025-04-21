@@ -25,9 +25,10 @@ const fetchOrderHistory = async () => {
           const user = await fetchUser(order.user);
           return `
             <tr>
-              <td>${order._id}</td>
-              <td>${user.username}</td>
-              <td>${order.totalAmount}</td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${order.totalAmount}</td>
+            <td>${order._id}</td>
               <td>${new Date(order.createdAt).toLocaleString()}</td>
               <td>${user.lojaltyBonus ? 'Trogen kund' : 'Ej trogen kund'}</td>
             </tr>`;
