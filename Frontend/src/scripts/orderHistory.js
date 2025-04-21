@@ -3,14 +3,23 @@ const tbody = document.querySelector(".table-body");
 
 const fetchUser = async (id) => {
     const token = localStorage.getItem("token");
-    const response = await fetch(`https://hakim-livs-g05-be.vercel.app/api/user/${id}`, {
+    try {
+      const response = await fetch(`https://hakim-livs-g05-be.vercel.app/api/user/${id}`, {
         headers: {
-            "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
         }
-    });
-    const data = await response.json();
-   return data
-}
+      });
+      if (!response.ok) {
+        throw new Error("Kunde inte hämta användare");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Fel vid hämtning av användare:", error);
+      return { username: "Okänd", email: "Okänd", lojaltyBonus: false };
+    }
+  };
+  
 const fetchOrderHistory = async () => {
 
     const token = localStorage.getItem("token");
