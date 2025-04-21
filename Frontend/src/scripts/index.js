@@ -1,4 +1,4 @@
-import { fetchProducts, logoutUser } from "../utils/api.js";
+import { fetchProducts, fetchCategories, logoutUser } from "../utils/api.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCartFromLocalStorage();
@@ -314,3 +314,38 @@ document.getElementById("checkoutButton").addEventListener("click", () => {
 });
 
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+async function renderCategoryDropdown() {
+  const select = document.getElementById("filterCategory");
+  if (!select) return;
+
+  const categories = await fetchCategories();
+
+  // Töm allt förutom första alternativet
+  select.innerHTML = `<option value="all">Kategorier</option>`;
+
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.category.toLowerCase();
+    option.textContent = capitalizeFirstLetter(category.category);
+    select.appendChild(option);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCategoryDropdown();
+});
+
+
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+  event.preventDefault();  // Förhindrar att formuläret skickas iväg
+
+  // Visa ett tackmeddelande
+  document.getElementById('confirmationMessage').style.display = 'block';
+
+  // Rensa formuläret
+  event.target.reset();
+});
