@@ -142,5 +142,15 @@ import {
   document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
     populateCategories();
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "/frontend/index.html"; 
+        return;
+    }
+    
+    const decoded = jwt_decode(token);
+    if (!decoded || !decoded.isAdmin) {
+        window.location.href = "/frontend/index.html"; 
+    }
   });
   
