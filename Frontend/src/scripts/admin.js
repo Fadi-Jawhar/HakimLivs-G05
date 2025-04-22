@@ -11,9 +11,10 @@ import {
   const productModal = new bootstrap.Modal(modalEl);
 
   async function renderProducts() {
-    const products = await fetchProducts();
     tbody.innerHTML = "";
-  
+    const products = await fetchProducts();
+    console.log(products);
+
     products.forEach((product) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -22,7 +23,7 @@ import {
         <td>${product.description}</td>
         <td>${product.price} kr</td>
         <td>${product.stock}</td>
-        <td>${product.category || "-"}</td>
+        <td>${product.category?.category || "-"}</td>
         <td class="text-end">
           <button class="btn btn-sm btn-outline-primary me-2 edit-btn" data-id="${product._id}">
             <i class="fa-solid fa-pen"></i>
