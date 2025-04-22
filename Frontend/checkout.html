@@ -506,6 +506,17 @@
     if (placeOrderBtn) {
       placeOrderBtn.addEventListener("click", function (e) {
         e.preventDefault();
+
+        const cart = getCart();
+        if (cart.length === 0) {
+        const errorMsg = document.getElementById("errorMessage");
+        if (errorMsg) {
+        errorMsg.textContent = "Din varukorg är tom. Lägg till minnst en produkt för att fortsätta";
+        errorMsg.classList.remove("hidden");
+      }
+      return;
+    }
+
         // Validera formulär
         const form = document.getElementById("checkoutForm");
         const swishPhoneInput = document.getElementById("swishPhone");
