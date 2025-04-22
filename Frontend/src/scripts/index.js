@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem('token');
       try {
         await logoutUser(refToken);
+        localStorage.removeItem('refToken');
       } catch (error) {
         console.error("Fel vid utloggning:", error);
       }
