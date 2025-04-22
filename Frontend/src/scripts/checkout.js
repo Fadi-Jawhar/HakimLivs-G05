@@ -366,6 +366,13 @@ const CheckoutManager = {
   async handlePayment(e) {
     e.preventDefault();
 
+    const cart = StorageHelper.getCart();
+    if (!cart || cart.length === 0) {
+      UIHelper.showNotification("Din varukorgen är tom, den måste inehålla minst en produkt", "error");
+      return;
+}
+
+
     if (!StorageHelper.isLoggedIn()) {
       UIHelper.showNotification("Du måste vara inloggad för att betala med Swish", "error");
       setTimeout(() => {
