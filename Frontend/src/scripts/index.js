@@ -26,6 +26,7 @@ function setupAuthUI() {
     const decoded = jwt_decode(token);
     if (decoded.isAdmin){
 
+
       regUserButton.textContent = 'Registrera ny användare';
       dashboardButton.style.display = 'block';
       dashboardLink.href = './dashboard/dashboard.html';

@@ -104,19 +104,27 @@
           <div class="form-row">
             <input type="text" name="firstName" id="firstName" placeholder="Förnamn" required />
             <input type="text" name="lastName" id="lastName" placeholder="Efternamn" required />
+            <input type="text" name="firstName" id="firstName" placeholder="Förnamn" required />
+            <input type="text" name="lastName" id="lastName" placeholder="Efternamn" required />
           </div>
           <input type="text" name="company" placeholder="Företagsnamn (valfritt)" />
           <input type="text" name="address" id="address" placeholder="Adress" required />
+          <input type="text" name="address" id="address" placeholder="Adress" required />
 
           <div class="form-row">
+            <select name="country" id="country" required>
             <select name="country" id="country" required>
               <option value="">Välj Land</option>
               <option value="Sverige" selected>Sverige</option>
             </select>
             <input type="text" name="city" id="city" placeholder="Stad" required />
             <input type="text" name="zip" id="zipCode" placeholder="Postnummer" required />
+            <input type="text" name="city" id="city" placeholder="Stad" required />
+            <input type="text" name="zip" id="zipCode" placeholder="Postnummer" required />
           </div>
           <div class="form-row">
+            <input type="email" name="email" id="email" placeholder="Email" required />
+            <input type="tel" name="phone" id="phone" placeholder="Telefonnummer" required />
             <input type="email" name="email" id="email" placeholder="Email" required />
             <input type="tel" name="phone" id="phone" placeholder="Telefonnummer" required />
           </div>
@@ -307,6 +315,7 @@
 
       }
     });
+
 
     function getCart() {
       try {
@@ -501,22 +510,64 @@
         console.error("Fel vid beställning:", error);
       }
     };
+    const createOrder = async (order, token) => {
+      const response = await fetch(`https://hakim-livs-g05-be.vercel.app/api/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(order)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Något gick fel vid skapande av beställning");
+      }
+
+      const result = await response.json();
+      return result;
+    }
+
+    const purchase = async () => {
+
+
+      const street = document.getElementById("address").value.trim();
+      const zipcode = document.getElementById("zipCode").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const country = document.getElementById("country").value.trim();
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+      const products = JSON.parse(localStorage.getItem("cart"));
+      console.log('token:', token)
+      console.log('decoded:', decoded)
+      console.log('products:', products)
+
+
+      const shippingAddress = { street, zipcode, city, country };
+
+      const newOrder = {
+        user: decoded._id,
+        items: products.map(product => ({
+          productId: product.id,
+          quantity: product.quantity,
+          price: product.price
+        })),
+        shippingAddress,
+      };
+
+      try {
+        await createOrder(newOrder, token);
+
+      } catch (error) {
+        console.error("Fel vid beställning:", error);
+      }
+    };
 
     const placeOrderBtn = document.getElementById("placeOrderBtn");
     if (placeOrderBtn) {
       placeOrderBtn.addEventListener("click", function (e) {
         e.preventDefault();
-
-        const cart = getCart();
-        if (cart.length === 0) {
-        const errorMsg = document.getElementById("errorMessage");
-        if (errorMsg) {
-        errorMsg.textContent = "Din varukorg är tom. Lägg till minnst en produkt för att fortsätta";
-        errorMsg.classList.remove("hidden");
-      }
-      return;
-    }
-
         // Validera formulär
         const form = document.getElementById("checkoutForm");
         const swishPhoneInput = document.getElementById("swishPhone");
@@ -590,12 +641,24 @@
               console.error("Ordern kunde inte skickas:", err);
               progressStatus.textContent = "Kunde inte skapa order. Försök igen.";
             });
+            purchase().then(() => {
+              setTimeout(() => {
+                localStorage.removeItem("cart");
+                const orderNumber = `HKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                window.location.href = `order-confirmation.html?order=${orderNumber}`;
+              }, 1000);
+            }).catch((err) => {
+              console.error("Ordern kunde inte skickas:", err);
+              progressStatus.textContent = "Kunde inte skapa order. Försök igen.";
+            });
           }
         }, 1500);
       });
     }
     
+    
     renderCart();
+
 
 
   </script>
