@@ -15,6 +15,7 @@ export async function fetchProducts() {
   }
 }
 
+
 export async function createProduct(product) {
   try {
     const token = localStorage.getItem("token")
@@ -214,4 +215,32 @@ export async function logoutUser(refToken) {
   } else {
     throw new Error(data.error || "Misslyckades med utloggning");
   }
+}
+export async function findProduct(id) {
+  try {
+    const res = await fetch(`${getBaseUrl()}api/products/${id}`);
+    return res.ok ? await res.json() : null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+export async function createOrder(order, token) {
+  const response = await fetch(`${getBaseUrl}/api/order`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(order)
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Något gick fel vid skapande av beställning");
+  }
+
+  const result = await response.json();
+  return result;
 }

@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     const decoded = jwt_decode(token);
     if (decoded.isAdmin){
+
       regUserButton.textContent = 'Registrera ny användare';
       dashboardButton.style.display = 'block';
       dashboardLink.href = './dashboard/dashboard.html';
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginButton.addEventListener('click', async (e) => {
       e.preventDefault();
       localStorage.removeItem('token');
+      localStorage.removeItem('refToken');
       try {
         await logoutUser(refToken);
         localStorage.removeItem('refToken');
@@ -80,7 +82,7 @@ async function loadProducts() {
     productsContainer.innerHTML = "";
 
     products.forEach((product) => {
-      if (!product.id) {
+      if (!product._id) {
         product.id = "product-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
       }
       const productCard = createProductCard(product);
@@ -117,7 +119,7 @@ function createProductCard(product) {
 
 // Lägg till produkt i varukorgen och uppdatera modalen
 function addToCart(product, event) {
-  const existingItem = cart.find(item => item.id === product.id);
+  const existingItem = cart.find(item => item.id === product._id);
 
   if (existingItem) {
     if (existingItem.quantity >= 1000) {
@@ -127,7 +129,7 @@ function addToCart(product, event) {
     existingItem.quantity += 1;
   } else {
     cart.push({
-      id: product.id,
+      id: product._id,
       name: product.name || "Namnlös produkt",
       price: product.price || 0,
       quantity: 1,
@@ -160,7 +162,6 @@ function showNotification(message, element) {
 
 // Uppdatera modalen med varukorgens innehåll och total
 function updateCartModal() {
-  console.log("Uppdaterar varukorgsmodalen med innehåll:", cart);
   const cartItemsContainer = document.getElementById("cartItems");
   const cartTotal = document.getElementById("cartTotal");
   let emptyCartMessage = document.querySelector(".empty-cart");
