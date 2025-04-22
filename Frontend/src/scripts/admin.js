@@ -143,10 +143,14 @@ import {
     renderProducts();
     populateCategories();
     const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "/frontend/index.html"; 
+        return;
+    }
+    
     const decoded = jwt_decode(token);
-    console.log(decoded)
-    if (!decoded?.isAdmin) {
-      window.location.href = "/frontend/index.html";
+    if (!decoded || !decoded.isAdmin) {
+        window.location.href = "/frontend/index.html"; 
     }
   });
   
