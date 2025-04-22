@@ -350,3 +350,16 @@ document.getElementById('contactForm').addEventListener('submit', function(event
   // Rensa formuläret
   event.target.reset();
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // När användaren klickar på länken "Kontakta Oss"
+  document.querySelector('a[href="#footer"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    const footer = document.querySelector('#footer');
+    console.log(footer);  // Kontrollera att detta returnerar rätt element
+    footer.scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
