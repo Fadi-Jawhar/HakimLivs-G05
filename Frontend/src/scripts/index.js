@@ -25,6 +25,7 @@ function setupAuthUI() {
   try {
     const decoded = jwt_decode(token);
     if (decoded.isAdmin){
+
       regUserButton.textContent = 'Registrera ny användare';
       dashboardButton.style.display = 'block';
       dashboardLink.href = './dashboard/dashboard.html';
@@ -41,6 +42,7 @@ function setupAuthUI() {
     loginButton.addEventListener('click', async (e) => {
       e.preventDefault();
       localStorage.removeItem('token');
+      localStorage.removeItem('refToken');
       try {
         await logoutUser(refToken);
         localStorage.removeItem('refToken');
@@ -163,7 +165,7 @@ function createProductCard(product) {
 }
 
 function addToCart(product, event) {
-  const existingItem = cart.find(item => item.id === product.id);
+  const existingItem = cart.find(item => item.id === product._id);
 
   if (existingItem) {
     if (existingItem.quantity >= 1000) {
@@ -173,7 +175,7 @@ function addToCart(product, event) {
     existingItem.quantity += 1;
   } else {
     cart.push({
-      id: product.id,
+      id: product._id,
       name: product.name || "Namnlös produkt",
       price: product.price || 0,
       quantity: 1,

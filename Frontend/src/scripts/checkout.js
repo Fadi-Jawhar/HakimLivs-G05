@@ -1,3 +1,41 @@
+import { createOrder } from "../utils/api";
+const products = JSON.parse(localStorage.getItem("cart"));
+const token = localStorage.getItem("token");
+const decoded = jwt_decode(token);
+console.log(decoded)
+
+
+const purchase = async () => {
+
+
+  const street = document.getElementById("address").value.trim();
+  const zipcode = document.getElementById("zipCode").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const country = document.getElementById("country").value.trim();
+
+  const shippingAddress = { street, zipcode, city, country };
+
+  const newOrder = {
+    user: decoded._id,
+    items: products.map(product => ({
+      productId: product.id,
+      quantity: product.quantity,
+      price: product.price
+    })),
+    shippingAddress,
+  };
+
+  try {
+    await createOrder(newOrder, token);
+
+  } catch (error) {
+    console.error("Fel vid beställning:", error);
+    alert("Något gick fel. Försök igen senare.");
+  }
+};
+
+
+
 const CONFIG = {
   baseUrl: "https://hakim-livs-g05-be.vercel.app/",
   localStorageKeys: {
@@ -75,7 +113,7 @@ const UIHelper = {
       <i class="fas fa-${type === "error" ? "exclamation-circle" : "check-circle"}"></i>
       ${message}
     `;
-    
+
     document.body.appendChild(notification);
     setTimeout(() => notification.remove(), CONFIG.notificationDuration);
   },
@@ -98,7 +136,7 @@ const UIHelper = {
   updateTotals(total) {
     const subtotalElement = document.getElementById("cartSubtotal");
     const totalElement = document.getElementById("cartTotal");
-    
+
     if (subtotalElement) subtotalElement.textContent = `${total.toFixed(2)} kr`;
     if (totalElement) totalElement.textContent = `${total.toFixed(2)} kr`;
   },
@@ -108,7 +146,7 @@ const UIHelper = {
     const existingMsg = document.getElementById("loginRequiredMsg");
 
     if (existingMsg) return;
-    
+
     const loginRequiredMsg = document.createElement("div");
     loginRequiredMsg.id = "loginRequiredMsg";
     loginRequiredMsg.className = "login-required-message";
@@ -119,7 +157,7 @@ const UIHelper = {
       </div>
       <button id="goToLoginBtn" class="button primary">Logga in</button>
     `;
-    
+
     if (paymentSection) {
       paymentSection.parentNode.insertBefore(loginRequiredMsg, paymentSection);
       paymentSection.style.display = "none";
@@ -130,21 +168,21 @@ const UIHelper = {
         cartContainer.appendChild(loginRequiredMsg);
       }
     }
-    
+
     document.getElementById("goToLoginBtn").addEventListener("click", () => {
       localStorage.setItem("redirectAfterLogin", window.location.href);
       window.location.href = CONFIG.routes.login;
     });
   },
-  
+
   hideLoginRequiredMessage() {
     const loginRequiredMsg = document.getElementById("loginRequiredMsg");
     const paymentSection = document.getElementById("paymentSection");
-    
+
     if (loginRequiredMsg) {
       loginRequiredMsg.remove();
     }
-    
+
     if (paymentSection) {
       paymentSection.style.display = "block";
     }
@@ -175,7 +213,7 @@ const CartManager = {
     quantity = Math.max(1, Math.min(quantity, CONFIG.maxQuantity));
     const cart = StorageHelper.getCart();
     const index = cart.findIndex(item => item.id === itemId);
-    
+
     if (index !== -1) {
       cart[index].quantity = quantity;
       StorageHelper.saveCart(cart);
@@ -194,7 +232,7 @@ const CartManager = {
   renderCartItems() {
     const cartContainer = document.getElementById("cartItemsContainer");
     const cart = StorageHelper.getCart();
-    
+
     if (!cartContainer) {
       console.error("Cart container element not found");
       return;
@@ -250,7 +288,7 @@ const UserManager = {
   renderUserData() {
     const user = StorageHelper.getUser();
     const userInfoElement = document.getElementById("userInfo");
-    
+
     if (userInfoElement && user) {
       userInfoElement.innerHTML = `
         <div class="user-info">
@@ -259,7 +297,7 @@ const UserManager = {
           <button id="logoutBtn" class="button small">Logga ut</button>
         </div>
       `;
-      
+
       document.getElementById("logoutBtn")?.addEventListener("click", this.logoutUser);
     }
   },
@@ -267,7 +305,7 @@ const UserManager = {
   logoutUser() {
     StorageHelper.clearUser();
     UIHelper.showNotification("Du är nu utloggad", "success");
-    
+
     setTimeout(() => {
       window.location.href = CONFIG.routes.home;
     }, 1500);
@@ -285,13 +323,13 @@ const CheckoutManager = {
       return true;
     }
   },
-  
+
   validateAllInputs() {
     const requiredFields = [
-      "firstName", "lastName", "address", "city", "zipCode", 
+      "firstName", "lastName", "address", "city", "zipCode",
       "email", "phone", "swishPhone"
     ];
-    
+
     for (const fieldId of requiredFields) {
       const field = document.getElementById(fieldId);
       if (!field || !field.value.trim()) {
@@ -304,10 +342,10 @@ const CheckoutManager = {
     const shipToDifferent = document.getElementById("shipToDifferent");
     if (shipToDifferent?.checked) {
       const shippingFields = [
-        "shippingFirstName", "shippingLastName", 
+        "shippingFirstName", "shippingLastName",
         "shippingAddress", "shippingCity", "shippingZipCode"
       ];
-      
+
       for (const fieldId of shippingFields) {
         const field = document.getElementById(fieldId);
         if (!field || !field.value.trim()) {
@@ -322,14 +360,14 @@ const CheckoutManager = {
     if (swishPhone) {
       const swishPhoneValue = swishPhone.value.trim();
       const swishPhoneRegex = /^(07[0236]\d{7}|07[0236]-\d{7}|\+46\s?7[0236]\d{7}|\+46\s?7[0236]-\d{7})$/;
-      
+
       if (!swishPhoneRegex.test(swishPhoneValue)) {
         UIHelper.showNotification("Ange ett giltigt svenskt mobilnummer för Swish (t.ex. 0701234567)", "error");
         swishPhone.focus();
         return false;
       }
     }
-    
+
     return true;
   },
 
@@ -340,7 +378,7 @@ const CheckoutManager = {
   simulatePayment() {
     const progressIndicator = document.getElementById("progressIndicator");
     const progressStatus = document.getElementById("progressStatus");
-    
+
     if (progressIndicator) progressIndicator.classList.remove("hidden");
 
     let step = 0;
@@ -354,7 +392,7 @@ const CheckoutManager = {
     return new Promise((resolve) => {
       const paymentInterval = setInterval(() => {
         if (progressStatus) progressStatus.textContent = steps[step];
-        
+
         if (++step >= steps.length) {
           clearInterval(paymentInterval);
           resolve();
@@ -366,13 +404,7 @@ const CheckoutManager = {
   async handlePayment(e) {
     e.preventDefault();
 
-    const cart = StorageHelper.getCart();
-    if (!cart || cart.length === 0) {
-      UIHelper.showNotification("Din varukorgen är tom, den måste inehålla minst en produkt", "error");
-      return;
-}
-
-
+    
     if (!StorageHelper.isLoggedIn()) {
       UIHelper.showNotification("Du måste vara inloggad för att betala med Swish", "error");
       setTimeout(() => {
@@ -384,18 +416,23 @@ const CheckoutManager = {
 
     if (!this.validateAllInputs()) return;
 
+
+    await this.simulatePayment();
+
     try {
-      await this.simulatePayment();
-      
-      StorageHelper.removeItem(CONFIG.localStorageKeys.cart);
-      const orderNumber = this.generateOrderNumber();
-      window.location.href = `${CONFIG.routes.orderConfirmation}?order=${orderNumber}`;
+      StorageHelper.saveCart([]);
+      UIHelper.showNotification("Beställning genomförd!", "success");
+      setTimeout(() => {
+        window.location.href = CONFIG.routes.orderConfirmation;
+
+      }, 2000);
     } catch (error) {
-      console.error("Payment error:", error);
-      UIHelper.showNotification("Ett fel uppstod vid betalningen", "error");
+      console.error("Fel vid beställning:", error);
+      UIHelper.showNotification("Det gick inte att genomföra beställningen", "error");
     }
   }
-};
+}
+
 
 const EventHandlers = {
   handleCartActions(e) {
@@ -415,7 +452,7 @@ const EventHandlers = {
 
   handleQuantityInput(e) {
     if (!e.target.classList.contains("quantity-input")) return;
-    
+
     const cartItem = e.target.closest(".cart-item");
     const itemId = cartItem?.dataset.id;
     const newQuantity = parseInt(e.target.value) || 1;
@@ -430,7 +467,7 @@ const EventHandlers = {
   setupEventListeners() {
     document.addEventListener("click", this.handleCartActions);
     document.addEventListener("input", this.handleQuantityInput);
-    
+
     const shipToDifferent = document.getElementById("shipToDifferent");
     if (shipToDifferent) {
       shipToDifferent.addEventListener("change", this.toggleShippingAddress);
@@ -439,8 +476,9 @@ const EventHandlers = {
     const orderButton = document.getElementById("placeOrderBtn");
     if (orderButton) {
       orderButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('klick')
         if (!StorageHelper.isLoggedIn()) {
-          e.preventDefault();
           UIHelper.showNotification("Du måste vara inloggad för att betala med Swish", "error");
           setTimeout(() => {
             localStorage.setItem("redirectAfterLogin", window.location.href);
@@ -467,9 +505,13 @@ function initializeCheckout() {
 
     UserManager.renderUserData();
   } else {
-  
+
     CheckoutManager.checkLoginStatus();
   }
 }
 
-document.addEventListener("DOMContentLoaded", initializeCheckout);
+document.addEventListener("DOMContentLoaded", () => {
+ initializeCheckout()
+ 
+})
+  
